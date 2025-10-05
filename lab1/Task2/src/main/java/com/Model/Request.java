@@ -17,9 +17,9 @@ public class Request {
 	// Пункт призначення
 	private String location;
 	// Відстань
-	private double distance;
+	private int distance;
 	// Вага вантажу
-	private double productMass;
+	private int productMass;
 	// Тип вантажу
-	private ProductType productType;
+	private Difficulty productType;
 }

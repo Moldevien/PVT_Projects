@@ -248,7 +248,7 @@ public class Main {
 				}
 				//Показати каталог
 				case 5: {
-					catalog.displayCatalog(catalog.getPublications());
+					displayCatalog(catalog.getPublications());
 					break;
 				}
 				//Пошук за назвою
@@ -260,7 +260,8 @@ public class Main {
 						out.println("Об'єкти не знайдені.");
 						break;
 					}
-					results.forEach(x -> out.println(x));
+					
+					displayCatalog(results);
 					break;
 				}
 				//Пошук за видавництвом
@@ -272,7 +273,8 @@ public class Main {
 						out.println("Об'єкти не знайдені.");
 						break;
 					}
-					results.forEach(x -> out.println(x));
+					
+					displayCatalog(results);
 					break;
 				}
 				//Пошук за роком випуску
@@ -284,7 +286,8 @@ public class Main {
 						out.println("Об'єкти не знайдені.");
 						break;
 					}
-					results.forEach(x -> out.println(x));
+					
+					displayCatalog(results);
 					break;
 				}
 				//Пошук за автором
@@ -296,13 +299,52 @@ public class Main {
 						out.println("Об'єкти не знайдені.");
 						break;
 					}
-					results.forEach(x -> out.println(x));
+					
+					displayCatalog(results);
 					break;
 				}
 				//Вихід
 				case 0: {
 					return;
 				}
+				//Невірний вибір
+				default: {
+					out.println("Невірний вибір. Спробуйте ще раз.");
+					break;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Виведення всього каталогу на екран з можливістю групувати об'єкти за їх типом
+	 */
+	public static void displayCatalog(List<Publication> publications) {
+		if (publications.isEmpty()) {
+			out.println("Каталог порожній.");
+			return;
+		}
+		
+		out.println("Каталог:");
+		
+		out.println("\nАльманахи:");
+		for (Publication publication : publications) {
+			if (publication instanceof Almanac) {
+				out.println(publication);
+			}
+		}
+		
+		out.println("\nКниги:");
+		for (Publication publication : publications) {
+			if (publication instanceof Book) {
+				out.println(publication);
+			}
+		}
+		
+		out.println("\nГазети:");
+		for (Publication publication : publications) {
+			if (publication instanceof Newspaper) {
+				out.println(publication);
 			}
 		}
 	}

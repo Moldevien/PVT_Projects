@@ -1,47 +1,99 @@
 package com;
 
-import com.Model.Car;
-import com.Model.Driver;
-import com.Model.ProductType;
-import com.Model.Request;
+import com.Model.*;
 import com.Service.CarBase;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Scanner;
+
+import static java.lang.System.*;
 
 public class Main {
+	public static CarBase carBase;
+	public static Random random = new Random();
+	public static Scanner s = new Scanner(in);
+	
 	public static void main(String[] args) {
-		// Створення водіїв
-		List<Driver> drivers = Arrays.asList(
-				new Driver("Іван", 2, 0, true),
-				new Driver("Петро", 5, 0, true),
-				new Driver("Олена", 7, 0, true)
-		);
+		carBase = new CarBase();
 		
-		// Створення автомобілів
-		List<Car> cars = Arrays.asList(
-				new Car("Газель", 1000, 1, true),
-				new Car("Камаз", 500, 3, true),
-				new Car("MAN", 10000, 5, true)
-		);
-		
-		// Ініціалізація бази
-		CarBase carBase = new CarBase(drivers, cars);
+		createRandomBase(carBase);
 		
 		// Створення заявок
-		List<Request> requests = Arrays.asList(
-				new Request("Київ", 800, 200, ProductType.LIGHT),
-				new Request("Львів", 4000, 600, ProductType.MEDIUM),
-				new Request("Одеса", 9500, 500, ProductType.HEAVY),
-				new Request("Харків", 1200, 400, ProductType.LIGHT)
-		);
+		for (int i = 1; i <= 10; i++) {
+			carBase.addRequest(new Request(
+					"Місто" + random.nextInt(1000),
+					random.nextInt(9000) + 1000,
+					random.nextInt(9500) + 500,
+					Difficulty.values()[random.nextInt(Difficulty.values().length)]));
+		}
 		
-		// Обробка заявок
-		for (Request request : requests) {
-			carBase.addRequest(request).ifPresentOrElse(
-					trip -> System.out.println("Успішно призначено рейс: " + trip + '\n'),
-					() -> System.out.println("Не вдалося призначити рейс для заявки: " + request)
-			);
+		out.println("Надійшли нові заявки, виберіть заявку для розпреділення");
+		out.println("Наявні заявки:");
+		out.println("№\tЛокація\tДистанція\tМаса\tСкладність");
+		
+		int i = 1;
+		for (Request request : carBase.getRequests()) {
+			out.println(i + ".\t" +
+					request.getLocation() + "\t" +
+					request.getDistance() + "\t" +
+					request.getProductMass() + "\t" +
+					request.getProductType());
+			i++;
+		}
+		
+		/*out.println("Виберіть заявку для виконання: ");
+		int idx = s.nextInt();
+		s.nextLine();
+		
+		if (idx < 1 || idx > carBase.getRequests().size()) {
+			out.println("Некоректний номер заявки");
+			return;
+		}*/
+		
+		// Розподіл заявок
+		i = 1;
+		for (Request request : carBase.getRequests()) {
+			Optional<Trip> tripOpt = carBase.assignRequest(request);
+			if (tripOpt.isPresent()) {
+				Trip trip = tripOpt.get();
+				out.println("\nЗаявка " + i + " успішно розподілена:");
+				out.println("Водій: " + trip.getDriver());
+				out.println("Автомобіль: " + trip.getCar());
+				out.println("Заявка: " + trip.getRequest());
+				out.printf("Оплата: %.2f\n", trip.getPayment());
+			} else {
+				err.println("Не вдалося розподілити заявку " + i + ". Немає доступних водіїв або автомобілів.");
+			}
+			i++;
+		}
+		
+		for (Request request : carBase.getRequests()) {
+			Optional<Trip> tripOpt = carBase.assignRequest(request);
+			if (tripOpt.isPresent()) {
+				Trip trip = tripOpt.get();
+				trip.getDriver().setAvailable(true);
+				trip.getCar().setAvailable(true);
+			}
+		}
+	}
+	
+	public static void createRandomBase(CarBase carBase) {
+		// Створення водіїв
+		for (int i = 1; i <= 101; i++) {
+			carBase.addDriver(new Driver(
+					"Водій " + i,
+					random.nextInt(11),
+					true));
+		}
+		
+		// Створення автомобілів
+		for (int i = 1; i <= 101; i++) {
+			carBase.addCar(new Car(
+					"Марка " + i,
+					random.nextInt(9500) + 500,
+					Difficulty.values()[random.nextInt(Difficulty.values().length)],
+					true));
 		}
 	}
 }

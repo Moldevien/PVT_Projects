@@ -15,10 +15,8 @@ public class Trip {
 	private Car car;
 	// Заявка
 	private Request request;
-	// Чи завершена поїздка
-	private boolean completed;
-	// Чи зламалась машина
-	private boolean carBroken;
 	// Оплата
 	private double payment;
+	// Час поїздки
+	private int tripTime;
 }

@@ -40,8 +40,7 @@ public class Catalog {
 			return false;
 		}
 		
-		publications.add(item);
-		return true;
+		return publications.add(item);
 	}
 	
 	/**
@@ -75,7 +74,7 @@ public class Catalog {
 						1965 + r.nextInt(60),
 						"Видавництво " + r.nextInt(100),
 						200 + r.nextInt(300),
-						"Твір " + r.nextInt(100) + "Твір " + r.nextInt(100)));
+						"Твір " + r.nextInt(100) + ", Твір " + r.nextInt(100)));
 				break;
 		}
 	}
@@ -88,8 +87,7 @@ public class Catalog {
 			return false;
 		}
 		
-		publications.remove(item);
-		return true;
+		return publications.remove(item);
 	}
 	
 	/**
@@ -103,27 +101,6 @@ public class Catalog {
 		} else {
 			return false;
 		}
-	}
-	
-	/**
-	 * Виведення всього каталогу на екран з можливістю групувати об'єкти за їх типом
-	 */
-	public void displayCatalog(List<Publication> publications) {
-		if (publications.isEmpty()) {
-			out.println("Каталог порожній.");
-			return;
-		}
-		
-		out.println("Каталог:");
-		
-		out.println("\nАльманахи:");
-		publications.stream().filter(item -> item instanceof Almanac).forEach(x -> out.println(x));
-		
-		out.println("\nКниги:");
-		publications.stream().filter(item -> item instanceof Book).forEach(x -> out.println(x));
-		
-		out.println("\nГазети:");
-		publications.stream().filter(item -> item instanceof Newspaper).forEach(x -> out.println(x));
 	}
 	
 	/**
