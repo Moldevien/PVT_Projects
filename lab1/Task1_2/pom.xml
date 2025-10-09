@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>Task2</artifactId>
+    <artifactId>Task1_2</artifactId>
 
     <dependencies>
         <dependency>
