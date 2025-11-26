@@ -1,152 +1,108 @@
--- Додамо працівників
-INSERT INTO staff (first_name, last_name, phone, address, position_id)
-VALUES
-('Іван', 'Бариста', '+380971111111', 'Київ, вул. Хрещатик, 10', 1),
-('Марія', 'Офіціант', '+380972222222', 'Київ, вул. Сагайдачного, 5', 2),
-('Олег', 'Кондитер', '+380973333333', 'Київ, вул. Грушевського, 7', 3);
-
--- Додамо клієнтів
-INSERT INTO clients (first_name, last_name, birth_date, phone, address, discount)
-VALUES
-('Анна', 'Петрова', '1995-03-10', '+380501111111', 'Київ, вул. Лесі Українки, 3', 5),
-('Олександр', 'Коваль', '1988-07-22', '+380502222222', 'Київ, вул. Бассейна, 2', 10);
-
--- Додамо продукти
-INSERT INTO products (name_ua, name_en, price, type_id)
-VALUES
-('Еспресо', 'Espresso', 45.00, 2),
-('Капучино', 'Cappuccino', 60.00, 2),
-('Чізкейк', 'Cheesecake', 85.00, 1),
-('Тірамісу', 'Tiramisu', 95.00, 1);
-
--- Додамо розклад роботи
-INSERT INTO staff_schedule (staff_id, work_date)
-VALUES
-(4, '2025-10-06'),
-(5, '2025-10-06'),
-(6, '2025-10-06');
-
--- Додамо замовлення
-INSERT INTO orders (client_id, staff_id)
-VALUES
-(3, 5),
-(4, 4);
-
--- Додамо товари в замовлення
-INSERT INTO order_products (order_id, product_id, quantity)
-VALUES
-(1, 2, 2),
-(1, 3, 1),
-(2, 2, 1),
-(2, 4, 1);
-
-
-
 -- Показати всі напої
-SELECT * FROM products WHERE type_id = (SELECT id FROM product_types WHERE name = 'Напій');
+select * from products where type_id = (select id from product_types where name = 'Напій');
 
 -- Показати всі десерти
-SELECT * FROM products WHERE type_id = (SELECT id FROM product_types WHERE name = 'Десерт');
+select * from products where type_id = (select id from product_types where name = 'Десерт');
 
 -- Показати інформацію про всіх барист
-SELECT * FROM staff WHERE position_id = (SELECT id FROM positions WHERE name = 'Бариста');
+select * from staff where position_id = (select id from positions where name = 'Бариста');
 
 -- Показати інформацію про всіх офіціантів
-SELECT * FROM staff WHERE position_id = (SELECT id FROM positions WHERE name = 'Офіціант');
+select * from staff where position_id = (select id from positions where name = 'Офіціант');
 
 -- Змінити ціну на окремий вид кави
-UPDATE products SET price = 65 WHERE name_ua = 'Капучино';
+update products set price = 65 where name_ua = 'Капучино';
 
 -- Змінити контактний, поштовий адрес кондитера
-UPDATE staff SET phone = '+380974444444', address = 'Київ, вул. Володимирська, 12'
-WHERE position_id = (SELECT id FROM positions WHERE name = 'Кондитер');
+update staff set phone = '+380974444444', address = 'Oleggggggg@gmail.com'
+where position_id = (select id from positions where name = 'Кондитер');
 
 -- Змінити контактний телефон баристи
-UPDATE staff SET phone = '+380975555555'
-WHERE position_id = (SELECT id FROM positions WHERE name = 'Бариста');
+update staff set phone = '+380975555555'
+where position_id = (select id from positions where name = 'Бариста');
 
 -- Змінити відсоток знижки конкретного клієнта
-UPDATE clients SET discount = 15 WHERE first_name = 'Анна' AND last_name = 'Петрова';
+update clients set discount = 15 where first_name = 'Анна' and last_name = 'Петрова';
 
 -- Видалити інформацію про конкретний десерт
-DELETE FROM products WHERE name_ua = 'Чізкейк';
+delete from products where name_ua = 'Чізкейк';
 
 -- Видалити інформацію про конкретного офіціанта (звільнення)
-DELETE FROM staff WHERE position_id = (SELECT id FROM positions WHERE name = 'Офіціант') AND last_name = 'Офіціант';
+delete from staff where position_id = (select id from positions where name = 'Офіціант') and last_name = 'Офіціант';
 
 -- Видалити інформацію про конкретного баристу (звільнення)
-DELETE FROM staff WHERE position_id = (SELECT id FROM positions WHERE name = 'Бариста') AND last_name = 'Бариста';
+delete from staff where position_id = (select id from positions where name = 'Бариста') and last_name = 'Бариста';
 
 -- Видалити інформацію про конкретного клієнта
-DELETE FROM clients WHERE first_name = 'Олександр' AND last_name = 'Коваль';
+delete from clients where first_name = 'Олександр' and last_name = 'Коваль';
 
 -- Додати нове замовлення кави
-INSERT INTO orders (client_id, staff_id) VALUES (3, 6);
-INSERT INTO order_products (order_id, product_id, quantity) VALUES (8, 2, 1);
+insert into orders (client_id, staff_id) values (1, 3);
+insert into order_products (order_id, product_id, quantity) values (4, 2, 1);
 
 -- Додати нове замовлення десерту
-INSERT INTO orders (client_id, staff_id) VALUES (1, 2);
-INSERT INTO order_products (order_id, product_id, quantity) VALUES (4, 4, 1);
+insert into orders (client_id, staff_id) values (1, 2);
+insert into order_products (order_id, product_id, quantity) values (4, 4, 1);
 
 -- Додати інформацію про графік роботи в найближчий понеділок
-INSERT INTO Staff_Schedule (staff_id, work_date)
-SELECT id, '2025-10-13' FROM Staff;
+insert into Staff_Schedule (staff_id, work_date)
+select id, '2025-10-13' from Staff;
 
 -- Додати новий вид кави
-INSERT INTO products (name_ua, name_en, price, type_id)
-VALUES ('Лате', 'Latte', 70, (SELECT id FROM product_types WHERE name = 'Напій'));
+insert into products (name_ua, name_en, price, type_id)
+values ('Лате', 'Latte', 70, (select id from product_types where name = 'Напій'));
 
 -- Змінити розклад роботи на найближчий вівторок
-UPDATE Staff_Schedule SET work_date = '2025-10-14' WHERE work_date = '2025-10-13';
+update Staff_Schedule set work_date = '2025-10-14' where work_date = '2025-10-13';
 
 -- Змінити назву вже існуючого виду кави
-UPDATE products SET name_ua = 'Американо', name_en = 'Americano' WHERE name_ua = 'Еспресо';
+update products set name_ua = 'Американо', name_en = 'Americano' where name_ua = 'Еспресо';
 
 -- Змінити інформацію про існуюче замовлення
-UPDATE orders SET staff_id = 3 WHERE id = 2;
+update orders set staff_id = 3 where id = 2;
 
 -- Змінити назву вже існуючого десерту
-UPDATE products SET name_ua = 'Шоколадний торт', name_en = 'Chocolate Cake'
-WHERE name_ua = 'Тірамісу';
+update products set name_ua = 'Шоколадний торт', name_en = 'Chocolate Cake'
+where name_ua = 'Тірамісу';
 
 -- Видалити конкретне замовлення
-DELETE FROM orders WHERE id = 1;
+delete from orders where id = 1;
 
 -- Видалити замовлення конкретного десерту
-DELETE FROM order_products
-WHERE product_id = (SELECT id FROM products WHERE name_ua = 'Шоколадний торт');
+delete from order_products
+where product_id = (select id from products where name_ua = 'Шоколадний торт');
 
 -- Видалити розклад роботи на конкретний день
-DELETE FROM staff_schedule WHERE work_date = '2025-10-06';
+delete from staff_schedule where work_date = '2025-10-06';
 
 -- Видалити розклад роботи між вказаними датами
-DELETE FROM staff_schedule WHERE work_date BETWEEN '2025-10-06' AND '2025-10-20';
+delete from staff_schedule where work_date BETWEEN '2025-10-06' and '2025-10-20';
 
 -- Показати всі замовлення конкретного десерту
-SELECT o.id AS order_id, c.first_name, c.last_name, p.name_ua AS dessert_name, op.quantity
-FROM orders o
-JOIN clients c ON o.client_id = c.id
-JOIN order_products op ON o.id = op.order_id
-JOIN products p ON op.product_id = p.id
-WHERE p.name_ua = 'Шоколадний торт';
+select o.id AS order_id, c.first_name, c.last_name, p.name_ua AS dessert_name, op.quantity
+from orders o
+join clients c on o.client_id = c.id
+join order_products op on o.id = op.order_id
+join products p on op.product_id = p.id
+where p.name_ua = 'Шоколадний торт';
 
 -- Показати розклад роботи на вказаний день
-SELECT s.first_name, s.last_name, p.name AS position_id, ss.work_date
-FROM staff_schedule ss
-JOIN staff s ON ss.staff_id = s.id
-JOIN positions p ON s.position_id = p.id
-WHERE ss.work_date = '2025-10-06';
+select s.first_name, s.last_name, p.name AS position_id, ss.work_date
+from staff_schedule ss
+join staff s on ss.staff_id = s.id
+join positions p on s.position_id = p.id
+where ss.work_date = '2025-10-06';
 
 -- Показати всі замовлення обраного офіціанта
-SELECT o.id, o.order_date, c.first_name, c.last_name
-FROM orders o
-JOIN clients c ON o.client_id = c.id
-JOIN staff s ON o.staff_id = s.id
-WHERE s.position_id = (SELECT id FROM positions WHERE name = 'Офіціант');
+select o.id, o.order_date, c.first_name, c.last_name
+from orders o
+join clients c on o.client_id = c.id
+join staff s on o.staff_id = s.id
+where s.position_id = (select id from positions where name = 'Офіціант');
 
 -- Показати всі замовлення обраного клієнта
-SELECT o.id, o.order_date, s.first_name AS staff_name, s.last_name AS staff_last
-FROM orders o
-JOIN staff s ON o.staff_id = s.id
-JOIN clients c ON o.client_id = c.id
-WHERE c.first_name = 'Анна' AND c.last_name = 'Петрова';
+select o.id, o.order_date, s.first_name AS staff_name, s.last_name AS staff_last
+from orders o
+join staff s on o.staff_id = s.id
+join clients c on o.client_id = c.id
+where c.first_name = 'Анна' and c.last_name = 'Петрова';

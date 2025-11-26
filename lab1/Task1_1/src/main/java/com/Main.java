@@ -34,284 +34,275 @@ public class Main {
 			out.println("0. Вихід");
 			out.print("Виберіть опцію: ");
 			
-			int choice = s.nextInt();
-			s.nextLine();
-			switch (choice) {
-				//Додати об'єкт
-				case 1: {
-					out.println("Що саме ви хочете додати?");
-					out.println("1. Альманах");
-					out.println("2. Книгу");
-					out.println("3. Газету");
-					out.print("Виберіть опцію: ");
-					
-					int type = s.nextInt();
-					s.nextLine();
-					
-					switch (type) {
-						//Додати альманах
-						case 1: {
-							out.println("\nУведіть дані альманаху:");
+			try {
+				String choice = s.nextLine();
+				
+				switch (choice) {
+					//Додати об'єкт
+					case "1": {
+						out.println("Що саме ви хочете додати?");
+						out.println("1. Альманах");
+						out.println("2. Книгу");
+						out.println("3. Газету");
+						out.print("Виберіть опцію: ");
+						
+						try {
+							String type = s.nextLine();
 							
-							out.print("Назва: ");
-							String title = s.nextLine();
-							
-							out.print("Назва книги: ");
-							String bookTitle = s.nextLine();
-							
-							out.print("Жанр: ");
-							String genre = s.nextLine();
-							
-							out.print("Рік: ");
-							int year = s.nextInt();
+							switch (type) {
+								//Додати альманах
+								case "1": {
+									out.println("\nУведіть дані альманаху:");
+									
+									out.print("Назва: ");
+									String title = s.nextLine();
+									
+									out.print("Назва книги: ");
+									String bookTitle = s.nextLine();
+									
+									out.print("Жанр: ");
+									String genre = s.nextLine();
+									
+									out.print("Рік: ");
+									int year = s.nextInt();
+									s.nextLine();
+									
+									out.print("Видавництво: ");
+									String publisher = s.nextLine();
+									
+									out.print("Кількість сторінок: ");
+									int pages = s.nextInt();
+									s.nextLine();
+									
+									out.print("Перелік творів (книг), які у ньому надруковані: ");
+									String works = s.nextLine();
+									
+									if (catalog.add(new Almanac(title, bookTitle, genre, year, publisher, pages, works)))
+										out.println("Альманах додано.");
+									else
+										err.println("Виникла помилка під час додавання альманаху.");
+									break;
+								}
+								//Додати книгу
+								case "2": {
+									out.println("\nУведіть дані книги:");
+									
+									out.print("Автор: ");
+									String author = s.nextLine();
+									
+									out.print("Назва: ");
+									String title = s.nextLine();
+									
+									out.print("Жанр: ");
+									String genre = s.nextLine();
+									
+									out.print("Рік: ");
+									int year = s.nextInt();
+									s.nextLine();
+									
+									out.print("Видавництво: ");
+									String publisher = s.nextLine();
+									
+									out.print("Кількість сторінок: ");
+									int pages = s.nextInt();
+									s.nextLine();
+									
+									if (catalog.add(new Book(author, title, genre, year, publisher, pages)))
+										out.println("Книгу додано.");
+									else
+										out.println("Книга з такою назвою вже існує.");
+									break;
+								}
+								//Додати газету
+								case "3": {
+									out.println("\nУведіть дані газети:");
+									
+									out.print("Номер газети: ");
+									int number = s.nextInt();
+									s.nextLine();
+									
+									out.print("Назва: ");
+									String title = s.nextLine();
+									
+									out.print("Дата випуску: ");
+									String date = s.nextLine();
+									
+									out.print("Перелік колонок газети: ");
+									String columns = s.nextLine();
+									
+									if (catalog.add(new Newspaper(number, title, date, columns)))
+										out.println("Газету додано.");
+									else
+										out.println("Газета з такою назвою вже існує.");
+									break;
+								}
+								//Невірний вибір
+								default: {
+									out.println("Невірний вибір. Спробуйте ще раз.");
+									break;
+								}
+							}
+						} catch (Exception e) {
+							err.println("Некоректний ввід даних. Спробуйте ще раз.\n" + e.getMessage());
 							s.nextLine();
-							
-							out.print("Видавництво: ");
-							String publisher = s.nextLine();
-							
-							out.print("Кількість сторінок: ");
-							int pages = s.nextInt();
-							s.nextLine();
-							
-							out.print("Перелік творів (книг), які у ньому надруковані: ");
-							String works = s.nextLine();
-							
-							if (catalog.add(new Almanac(title, bookTitle, genre, year, publisher, pages, works)))
-								out.println("Альманах додано.");
-							else
-								out.println("Альманах з такою назвою вже існує.");
-							break;
 						}
-						//Додати книгу
-						case 2: {
-							out.println("\nУведіть дані книги:");
-							
-							out.print("Автор: ");
-							String author = s.nextLine();
-							
-							out.print("Назва: ");
-							String title = s.nextLine();
-							
-							out.print("Жанр: ");
-							String genre = s.nextLine();
-							
-							out.print("Рік: ");
-							int year = s.nextInt();
-							s.nextLine();
-							
-							out.print("Видавництво: ");
-							String publisher = s.nextLine();
-							
-							out.print("Кількість сторінок: ");
-							int pages = s.nextInt();
-							s.nextLine();
-							
-							if (catalog.add(new Book(author, title, genre, year, publisher, pages)))
-								out.println("Книгу додано.");
-							else
-								out.println("Книга з такою назвою вже існує.");
-							break;
-						}
-						//Додати газету
-						case 3: {
-							out.println("\nУведіть дані газети:");
-							
-							out.print("Номер газети: ");
-							int number = s.nextInt();
-							s.nextLine();
-							
-							out.print("Назва: ");
-							String title = s.nextLine();
-							
-							out.print("Дата випуску: ");
-							String date = s.nextLine();
-							
-							out.print("Перелік колонок газети: ");
-							String columns = s.nextLine();
-							
-							if (catalog.add(new Newspaper(number, title, date, columns)))
-								out.println("Газету додано.");
-							else
-								out.println("Газета з такою назвою вже існує.");
-							break;
-						}
-					}
-					break;
-				}
-				//Додати випадковий об'єкт
-				case 2: {
-					catalog.addRandom();
-					out.println("Випадковий об'єкт додано.");
-					break;
-				}
-				//Видалити об'єкт
-				case 3: {
-					out.print("Введіть назву: ");
-					if (catalog.remove(catalog.getPublication(s.nextLine())))
-						out.println("Об'єкт видалено.");
-					else
-						out.println("Об'єкт не знайдено.");
-					break;
-				}
-				//Коригувати об'єкт
-				case 4: {
-					out.print("Введіть назву публікації для коригування: ");
-					Publication item1 = catalog.getPublication(s.nextLine());
-					Publication item2 = null;
-					
-					if (item1 == null) {
-						out.println("Публікацію не знайдено.");
 						break;
 					}
-					
-					out.println("Уведіть нові дані:");
-					switch (item1.getClass().getName()) {
-						//Додати альманах
-						case "Almanac": {
-							out.println("\nУведіть дані альманаху:");
-							
-							out.print("Назва: ");
-							String title = s.nextLine();
-							
-							out.print("\nНазва книги: ");
-							String bookTitle = s.nextLine();
-							
-							out.print("\nЖанр: ");
-							String genre = s.nextLine();
-							
-							out.print("\nРік: ");
-							int year = s.nextInt();
-							
-							out.print("\nВидавництво: ");
-							String publisher = s.nextLine();
-							
-							out.print("\nКількість сторінок: ");
-							int pages = s.nextInt();
-							
-							out.print("\nПерелік творів (книг), які у ньому надруковані: ");
-							String works = s.nextLine();
-							
-							item2 = new Almanac(title, bookTitle, genre, year, publisher, pages, works);
+					//Додати випадковий об'єкт
+					case "2": {
+						catalog.addRandom();
+						out.println("Випадковий об'єкт додано.");
+						break;
+					}
+					//Видалити об'єкт
+					case "3": {
+						out.print("Введіть назву: ");
+						if (catalog.remove(catalog.getPublication(s.nextLine())))
+							out.println("Об'єкт видалено.");
+						else
+							out.println("Об'єкт не знайдено.");
+						break;
+					}
+					//Коригувати об'єкт
+					case "4": {
+						out.print("Введіть назву публікації для коригування: ");
+						Publication item1 = catalog.getPublication(s.nextLine());
+						Publication item2 = null;
+						
+						if (item1 == null) {
+							out.println("Публікацію не знайдено.");
 							break;
 						}
-						//Додати книгу
-						case "Book": {
-							out.println("\nУведіть дані книги:");
-							
-							out.print("Автор: ");
-							String author = s.nextLine();
-							
-							out.print("\nНазва: ");
-							String title = s.nextLine();
-							
-							out.print("\nЖанр: ");
-							String genre = s.nextLine();
-							
-							out.print("\nРік: ");
-							int year = s.nextInt();
-							
-							out.print("\nВидавництво: ");
-							String publisher = s.nextLine();
-							
-							out.print("\nКількість сторінок: ");
-							int pages = s.nextInt();
-							
-							item2 = new Book(author, title, genre, year, publisher, pages);
-							break;
+						
+						out.println("Уведіть нові дані:");
+						switch (item1.getClass().getName()) {
+							//Додати альманах
+							case "Almanac": {
+								out.println("\nУведіть дані альманаху:");
+								
+								out.print("Назва: ");
+								String title = s.nextLine();
+								
+								out.print("Назва книги: ");
+								String bookTitle = s.nextLine();
+								
+								out.print("Жанр: ");
+								String genre = s.nextLine();
+								
+								out.print("Рік: ");
+								int year = s.nextInt();
+								s.nextLine();
+								
+								out.print("Видавництво: ");
+								String publisher = s.nextLine();
+								
+								out.print("Кількість сторінок: ");
+								int pages = s.nextInt();
+								s.nextLine();
+								
+								out.print("Перелік творів (книг), які у ньому надруковані: ");
+								String works = s.nextLine();
+								
+								item2 = new Almanac(title, bookTitle, genre, year, publisher, pages, works);
+								break;
+							}
+							//Додати книгу
+							case "Book": {
+								out.println("\nУведіть дані книги:");
+								
+								out.print("Автор: ");
+								String author = s.nextLine();
+								
+								out.print("Назва: ");
+								String title = s.nextLine();
+								
+								out.print("Жанр: ");
+								String genre = s.nextLine();
+								
+								out.print("Рік: ");
+								int year = s.nextInt();
+								s.nextLine();
+								
+								out.print("Видавництво: ");
+								String publisher = s.nextLine();
+								
+								out.print("Кількість сторінок: ");
+								int pages = s.nextInt();
+								s.nextLine();
+								
+								item2 = new Book(author, title, genre, year, publisher, pages);
+								break;
+							}
+							//Додати газету
+							case "Newspaper": {
+								out.println("\nУведіть дані газети:");
+								
+								out.print("Номер газети: ");
+								int number = s.nextInt();
+								s.nextLine();
+								
+								out.print("\nНазва: ");
+								String title = s.nextLine();
+								
+								out.print("\nДата випуску: ");
+								String date = s.nextLine();
+								
+								out.print("\nПерелік колонок газети: ");
+								String columns = s.nextLine();
+								
+								item2 = new Newspaper(number, title, date, columns);
+								break;
+							}
 						}
-						//Додати газету
-						case "Newspaper": {
-							out.println("\nУведіть дані газети:");
-							
-							out.print("Номер газети: ");
-							int number = s.nextInt();
-							
-							out.print("\nНазва: ");
-							String title = s.nextLine();
-							
-							out.print("\nДата випуску: ");
-							String date = s.nextLine();
-							
-							out.print("\nПерелік колонок газети: ");
-							String columns = s.nextLine();
-							
-							item2 = new Newspaper(number, title, date, columns);
-							break;
-						}
-					}
-					
-					if (catalog.update(item1, item2))
-						out.println("Об'єкт відкориговано.");
-					else
-						out.println("Об'єкт не знайдено.");
-					break;
-				}
-				//Показати каталог
-				case 5: {
-					displayCatalog(catalog.getPublications());
-					break;
-				}
-				//Пошук за назвою
-				case 6: {
-					out.print("Введіть назву: ");
-					List<Publication> results = catalog.searchByTitle(s.nextLine());
-					
-					if (results.equals(null)) {
-						out.println("Об'єкти не знайдені.");
+						
+						if (catalog.update(item1, item2))
+							out.println("Об'єкт відкориговано.");
+						else
+							out.println("Об'єкт не знайдено.");
 						break;
 					}
-					
-					displayCatalog(results);
-					break;
-				}
-				//Пошук за видавництвом
-				case 7: {
-					out.print("Введіть видавництво: ");
-					List<Publication> results = catalog.searchByPublisher(s.nextLine());
-					
-					if (results.equals(null)) {
-						out.println("Об'єкти не знайдені.");
+					//Показати каталог
+					case "5": {
+						displayCatalog(catalog.getPublications());
 						break;
 					}
-					
-					displayCatalog(results);
-					break;
-				}
-				//Пошук за роком випуску
-				case 8: {
-					out.print("Введіть рік випуску: ");
-					List<Publication> results = catalog.searchByYear(s.nextInt());
-					
-					if (results.equals(null)) {
-						out.println("Об'єкти не знайдені.");
+					//Пошук за назвою
+					case "6": {
+						out.print("Введіть назву: ");
+						displayCatalog(catalog.searchByTitle(s.nextLine()));
 						break;
 					}
-					
-					displayCatalog(results);
-					break;
-				}
-				//Пошук за автором
-				case 9: {
-					out.print("Введіть автора: ");
-					List<Publication> results = catalog.searchByAuthor(s.nextLine());
-					
-					if (results.equals(null)) {
-						out.println("Об'єкти не знайдені.");
+					//Пошук за видавництвом
+					case "7": {
+						out.print("Введіть видавництво: ");
+						displayCatalog(catalog.searchByPublisher(s.nextLine()));
 						break;
 					}
-					
-					displayCatalog(results);
-					break;
+					//Пошук за роком випуску
+					case "8": {
+						out.print("Введіть рік випуску: ");
+						displayCatalog(catalog.searchByYear(s.nextInt()));
+						break;
+					}
+					//Пошук за автором
+					case "9": {
+						out.print("Введіть автора: ");
+						displayCatalog(catalog.searchByAuthor(s.nextLine()));
+						break;
+					}
+					//Вихід
+					case "0": {
+						return;
+					}
+					//Невірний вибір
+					default: {
+						out.println("Невірний вибір. Спробуйте ще раз.");
+						break;
+					}
 				}
-				//Вихід
-				case 0: {
-					return;
-				}
-				//Невірний вибір
-				default: {
-					out.println("Невірний вибір. Спробуйте ще раз.");
-					break;
-				}
+			} catch (Exception e) {
+				err.println("Некоректний ввід даних. Спробуйте ще раз.\n" + e.getMessage());
+				s.nextLine();
 			}
 		}
 	}
@@ -321,7 +312,7 @@ public class Main {
 	 */
 	public static void displayCatalog(List<Publication> publications) {
 		if (publications.isEmpty()) {
-			out.println("Каталог порожній.");
+			err.println("Каталог порожній.");
 			return;
 		}
 		

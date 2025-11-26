@@ -12,7 +12,7 @@ import static java.lang.System.*;
 public class Main {
 	public static CarBase carBase;
 	public static Random random = new Random();
-	public static Scanner s = new Scanner(in);
+	//public static Scanner s = new Scanner(in);
 	
 	public static void main(String[] args) {
 		carBase = new CarBase();
@@ -28,7 +28,7 @@ public class Main {
 					Difficulty.values()[random.nextInt(Difficulty.values().length)]));
 		}
 		
-		out.println("Надійшли нові заявки, виберіть заявку для розпреділення");
+		out.println("Надійшли нові заявки, виберіть заявку для розподілення");
 		out.println("Наявні заявки:");
 		out.println("№\tЛокація\tДистанція\tМаса\tСкладність");
 		

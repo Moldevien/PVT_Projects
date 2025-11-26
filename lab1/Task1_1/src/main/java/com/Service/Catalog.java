@@ -6,13 +6,10 @@ import com.Model.Newspaper;
 import com.Model.Publication;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.lang.System.*;
 
 //Для каталогу передбачити таке:
 //− можливість тестової ініціалізації;
