@@ -1,8 +1,6 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <html>
-<head>
-    <title>Task4_4</title>
-</head>
+<head><title>Task4_4</title></head>
 <body>
 <h2>Введіть три числа</h2>
 
@@ -23,6 +21,5 @@
 
     <button type="submit">Обчислити</button>
 </form>
-
 </body>
 </html>
