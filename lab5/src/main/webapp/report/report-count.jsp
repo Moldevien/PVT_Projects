@@ -5,8 +5,7 @@
     String title = (String) request.getAttribute("title");
     String filter = (String) request.getAttribute("filter");
 %>
-<html>
-<head><title><%= title %></title></head>
+<html><head><title><%= title %></title></head>
 <body>
 <a href="../index.jsp">Меню</a>
 <h1><%= title %></h1>

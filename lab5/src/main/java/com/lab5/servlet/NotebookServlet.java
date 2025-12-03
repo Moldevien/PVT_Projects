@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import com.lab5.dao.NotebookDAO;
 import com.lab5.model.Notebook;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -14,7 +13,7 @@ import jakarta.servlet.annotation.*;
 @WebServlet(name = "NotebookServlet", value = {"/", "/new", "/insert", "/update", "/list", "/edit", "/delete",
 		"/report/countries", "/report/manufacturers", "/report/country-max", "/report/country-min",
 		"/report/manufacturer-max", "/report/manufacturer-min",
-		"/filter/hard", "/filter/soft", "/filter/by-country", "/filter/page-style",	"/filter/pages",
+		"/filter/hard", "/filter/soft", "/filter/by-country", "/filter/page-style", "/filter/pages",
 		"/filter/circulation"})
 public class NotebookServlet extends HttpServlet {
 	private NotebookDAO notebookDAO;
@@ -78,11 +77,8 @@ public class NotebookServlet extends HttpServlet {
 					break;
 				
 				// filters
-				case "/filter/hard":
-					filterHard(request, response);
-					break;
-				case "/filter/soft":
-					filterSoft(request, response);
+				case "/filter/cover-type":
+					filterCoverType(request, response);
 					break;
 				case "/filter/by-country":
 					filterByCountry(request, response);
@@ -107,6 +103,7 @@ public class NotebookServlet extends HttpServlet {
 	}
 	
 	// ---------- CRUD handlers ----------
+	
 	/**
 	 * Показати список блокнотів
 	 */
@@ -115,8 +112,7 @@ public class NotebookServlet extends HttpServlet {
 		List<Notebook> notebooks = notebookDAO.getAllNotebook();
 		request.setAttribute("listNotebook", notebooks);
 		request.setAttribute("title", "Список блокнотів");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("notebook-list.jsp");
-		dispatcher.forward(request, response);
+		request.getRequestDispatcher("notebook-list.jsp").forward(request, response);
 	}
 	
 	/**
@@ -124,8 +120,7 @@ public class NotebookServlet extends HttpServlet {
 	 */
 	private void showNewForm(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("notebook-form.jsp");
-		dispatcher.forward(request, response);
+		request.getRequestDispatcher("notebook-form.jsp").forward(request, response);
 	}
 	
 	/**
@@ -136,8 +131,7 @@ public class NotebookServlet extends HttpServlet {
 		int id = Integer.parseInt(request.getParameter("id"));
 		Notebook existingNotebook = notebookDAO.getNotebook(id);
 		request.setAttribute("notebook", existingNotebook);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("notebook-form.jsp");
-		dispatcher.forward(request, response);
+		request.getRequestDispatcher("notebook-form.jsp").forward(request, response);
 	}
 	
 	/**
@@ -198,6 +192,7 @@ public class NotebookServlet extends HttpServlet {
 	}
 	
 	// ---------- Reports ----------
+	
 	/**
 	 * Показати країни та кількість блокнотів для кожної країни
 	 */
@@ -207,8 +202,7 @@ public class NotebookServlet extends HttpServlet {
 		request.setAttribute("report", data);
 		request.setAttribute("title", "Країни та кількість блокнотів");
 		request.setAttribute("filter", "Країна");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("report-count.jsp");
-		dispatcher.forward(request, response);
+		request.getRequestDispatcher("report-count.jsp").forward(request, response);
 	}
 	
 	/**
@@ -220,8 +214,7 @@ public class NotebookServlet extends HttpServlet {
 		request.setAttribute("report", data);
 		request.setAttribute("title", "Виробники та кількість блокнотів");
 		request.setAttribute("filter", "Виробник");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("report-count.jsp");
-		dispatcher.forward(request, response);
+		request.getRequestDispatcher("report-count.jsp").forward(request, response);
 	}
 	
 	/**
@@ -232,8 +225,7 @@ public class NotebookServlet extends HttpServlet {
 		Optional<Object[]> r = notebookDAO.getCountryMax();
 		request.setAttribute("single", r.orElse(null));
 		request.setAttribute("title", "Країна з найбільшою кількістю блокнотів");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("report.jsp");
-		dispatcher.forward(request, response);
+		request.getRequestDispatcher("report.jsp").forward(request, response);
 	}
 	
 	/**
@@ -244,8 +236,7 @@ public class NotebookServlet extends HttpServlet {
 		Optional<Object[]> r = notebookDAO.getCountryMin();
 		request.setAttribute("single", r.orElse(null));
 		request.setAttribute("title", "Країна з найменшою кількістю блокнотів");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("report.jsp");
-		dispatcher.forward(request, response);
+		request.getRequestDispatcher("report.jsp").forward(request, response);
 	}
 	
 	/**
@@ -256,8 +247,7 @@ public class NotebookServlet extends HttpServlet {
 		Optional<Object[]> r = notebookDAO.getManufacturerMax();
 		request.setAttribute("single", r.orElse(null));
 		request.setAttribute("title", "Виробник з найбільшою кількістю блокнотів");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("report.jsp");
-		dispatcher.forward(request, response);
+		request.getRequestDispatcher("report.jsp").forward(request, response);
 	}
 	
 	/**
@@ -268,33 +258,21 @@ public class NotebookServlet extends HttpServlet {
 		Optional<Object[]> r = notebookDAO.getManufacturerMin();
 		request.setAttribute("single", r.orElse(null));
 		request.setAttribute("title", "Виробник з найменшою кількістю блокнотів");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("report.jsp");
-		dispatcher.forward(request, response);
+		request.getRequestDispatcher("report.jsp").forward(request, response);
 	}
 	
 	// ---------- Filters ----------
-	/**
-	 * Показати блокноти з твердою обкладинкою
-	 */
-	private void filterHard(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		List<Notebook> list = notebookDAO.getHardCover();
-		request.setAttribute("listNotebook", list);
-		request.setAttribute("title", "Блокноти з твердою обкладинкою");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("filter-results.jsp");
-		dispatcher.forward(request, response);
-	}
 	
 	/**
-	 * Показати блокноти з м'якою обкладинкою
+	 * Показати блокноти за типом обкладинки
 	 */
-	private void filterSoft(HttpServletRequest request, HttpServletResponse response)
+	private void filterCoverType(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<Notebook> list = notebookDAO.getSoftCover();
+		String type = request.getParameter("coverType");
+		List<Notebook> list = notebookDAO.filterByCoverType(type);
 		request.setAttribute("listNotebook", list);
-		request.setAttribute("title", "Блокноти з м’якою обкладинкою");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("filter-results.jsp");
-		dispatcher.forward(request, response);
+		request.setAttribute("title", "Блокноти з типом обкладинки: " + type);
+		request.getRequestDispatcher("filter-results.jsp").forward(request, response);
 	}
 	
 	/**
@@ -306,8 +284,7 @@ public class NotebookServlet extends HttpServlet {
 		List<Notebook> list = notebookDAO.getByCountry(country);
 		request.setAttribute("listNotebook", list);
 		request.setAttribute("title", "Блокноти з країни: " + country);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("filter-results.jsp");
-		dispatcher.forward(request, response);
+		request.getRequestDispatcher("filter-results.jsp").forward(request, response);
 	}
 	
 	/**
@@ -319,8 +296,7 @@ public class NotebookServlet extends HttpServlet {
 		List<Notebook> list = notebookDAO.filterByPageStyle(style);
 		request.setAttribute("listNotebook", list);
 		request.setAttribute("title", "Блокноти зі стилем сторінки: " + style);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("filter-results.jsp");
-		dispatcher.forward(request, response);
+		request.getRequestDispatcher("filter-results.jsp").forward(request, response);
 	}
 	
 	/**
@@ -333,8 +309,7 @@ public class NotebookServlet extends HttpServlet {
 		List<Notebook> list = notebookDAO.filterByPages(min, max);
 		request.setAttribute("listNotebook", list);
 		request.setAttribute("title", "Блокноти за кількістю сторінок: " + min + " - " + max);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("filter-results.jsp");
-		dispatcher.forward(request, response);
+		request.getRequestDispatcher("filter-results.jsp").forward(request, response);
 	}
 	
 	/**
@@ -347,7 +322,6 @@ public class NotebookServlet extends HttpServlet {
 		List<Notebook> list = notebookDAO.filterByCirculation(min, max);
 		request.setAttribute("listNotebook", list);
 		request.setAttribute("title", "Блокноти за тиражем: " + min + " - " + max);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("filter-results.jsp");
-		dispatcher.forward(request, response);
+		request.getRequestDispatcher("filter-results.jsp").forward(request, response);
 	}
 }

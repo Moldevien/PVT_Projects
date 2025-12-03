@@ -165,23 +165,12 @@ public class NotebookDAO {
 	}
 	
 	/**
-	 * Отримати блокноти з м'якою обкладинкою
+	 * Фільтрація за стилем сторінок
 	 */
-	public List<Notebook> getHardCover() {
+	public List<Notebook> filterByCoverType(String type) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			return session.createQuery("FROM Notebook n WHERE n.coverType = :t", Notebook.class)
-					.setParameter("t", "тверда")
-					.getResultList();
-		}
-	}
-	
-	/**
-	 * Отримати блокноти з м'якою обкладинкою
-	 */
-	public List<Notebook> getSoftCover() {
-		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			return session.createQuery("FROM Notebook n WHERE n.coverType = :t", Notebook.class)
-					.setParameter("t", "м’яка")
+					.setParameter("t", type)
 					.getResultList();
 		}
 	}

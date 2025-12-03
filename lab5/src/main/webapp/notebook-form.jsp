@@ -4,8 +4,7 @@
     Notebook notebook = (Notebook) request.getAttribute("notebook");
     boolean edit = (notebook != null);
 %>
-<html>
-<head><title><%= (edit ? "Редагувати" : "Додати") %> блокнот</title></head>
+<html><head><title><%= (edit ? "Редагувати" : "Додати") %> блокнот</title></head>
 <body>
 <a href="index.jsp">Меню</a>
 <h1><%= (edit ? "Редагувати" : "Додати") %> блокнот</h1>

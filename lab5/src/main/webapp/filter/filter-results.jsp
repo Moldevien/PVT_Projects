@@ -5,8 +5,7 @@
     List<Notebook> list = (List<Notebook>) request.getAttribute("listNotebook");
     String title = (String) request.getAttribute("title");
 %>
-<html>
-<head><title><%= title %></title></head>
+<html><head><title><%= title %></title></head>
 <body>
 <a href="../index.jsp">Меню</a>
 <h1><%= title %></h1>

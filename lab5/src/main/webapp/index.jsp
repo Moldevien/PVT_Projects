@@ -1,6 +1,5 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
-<html>
-<head><title>Блокноти — Меню</title></head>
+<html><head><title>Блокноти — Меню</title></head>
 <body>
 <h1>Меню</h1>
 <ul>
@@ -15,10 +14,14 @@
 </ul>
 
 <h3>Фільтри</h3>
-<ul>
-    <li><a href="filter/hard">Тверда обкладинка</a></li>
-    <li><a href="filter/soft">М'яка обкладинка</a></li>
-</ul>
+<h4>Фільтр по обкладинках</h4>
+<form action="filter/cover-type" method="get">
+    <select name="coverType" required>
+        <option value="тверда">тверда</option>
+        <option value="м’яка">м’яка</option>
+    </select>
+    <button type="submit">Фільтрувати</button>
+</form>
 
 <h4>Фільтр по країні</h4>
 <form action="filter/by-country" method="get">

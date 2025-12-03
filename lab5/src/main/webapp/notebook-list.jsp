@@ -5,12 +5,10 @@
     List<Notebook> list = (List<Notebook>) request.getAttribute("listNotebook");
     String title = (String) request.getAttribute("title");
 %>
-<html>
-<head><title><%= title %></title></head>
+<html><head><title><%= title %></title></head>
 <body>
-<a href="index.jsp">Меню</a>
+<a href="index.jsp">Меню</a> | <a href="new">Додати новий</a>
 <h1><%= title %></h1>
-<a href="new">Додати новий</a>
 <table border="1" cellpadding="5">
     <tr>
         <th>ID</th>
