@@ -10,9 +10,9 @@ import java.util.List;
 public class ProductDAO {
 	public void add(Product product) {
 		Transaction tx = null;
-		try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-			tx = s.beginTransaction();
-			s.persist(product);
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			tx = session.beginTransaction();
+			session.persist(product);
 			tx.commit();
 		} catch (Exception e) {
 			if (tx != null) tx.rollback();
@@ -22,9 +22,9 @@ public class ProductDAO {
 	
 	public void update(Product product) {
 		Transaction tx = null;
-		try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-			tx = s.beginTransaction();
-			s.merge(product);
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			tx = session.beginTransaction();
+			session.merge(product);
 			tx.commit();
 		} catch (Exception e) {
 			if (tx != null) tx.rollback();
@@ -34,10 +34,10 @@ public class ProductDAO {
 	
 	public void delete(int id) {
 		Transaction tx = null;
-		try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-			tx = s.beginTransaction();
-			Product product = s.get(Product.class, id);
-			if (product != null) s.remove(product);
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			tx = session.beginTransaction();
+			Product product = session.get(Product.class, id);
+			if (product != null) session.remove(product);
 			tx.commit();
 		} catch (Exception e) {
 			if (tx != null) tx.rollback();
@@ -46,21 +46,21 @@ public class ProductDAO {
 	}
 	
 	public Product getById(int id) {
-		try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-			return s.get(Product.class, id);
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			return session.get(Product.class, id);
 		}
 	}
 	
 	public List<Product> getAll() {
-		try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-			return s.createQuery("FROM Product", Product.class).getResultList();
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			return session.createQuery("FROM Product", Product.class).getResultList();
 		}
 	}
 	
 	public Object[] getMostPopular() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			return session.createQuery(
-					"SELECT s.product, COUNT(s.product) AS count FROM Sale s GROUP BY s.product ORDER BY count DESC",
+					"SELECT sale.product, COUNT(sale.product) AS count FROM Sale sale GROUP BY sale.product ORDER BY count DESC",
 					Object[].class).setMaxResults(1).uniqueResult();
 		}
 	}

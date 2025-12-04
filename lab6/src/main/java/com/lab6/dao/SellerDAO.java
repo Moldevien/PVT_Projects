@@ -60,7 +60,7 @@ public class SellerDAO {
 	public Object[] getTop() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			return session.createQuery(
-					"SELECT s.seller, SUM(s.product.price) AS total FROM Sale s GROUP BY s.seller ORDER BY total DESC",
+					"SELECT sale.seller, SUM(sale.product.price) AS total FROM Sale sale GROUP BY sale.seller ORDER BY total DESC",
 					Object[].class).setMaxResults(1).uniqueResult();
 		}
 	}

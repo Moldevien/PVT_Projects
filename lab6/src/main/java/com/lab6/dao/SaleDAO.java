@@ -38,8 +38,8 @@ public class SaleDAO {
 		Transaction tx = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			tx = session.beginTransaction();
-			Sale s = session.get(Sale.class, id);
-			if (s != null) session.remove(s);
+			Sale sale = session.get(Sale.class, id);
+			if (sale != null) session.remove(sale);
 			tx.commit();
 		} catch (Exception e) {
 			if (tx != null) tx.rollback();
@@ -55,13 +55,13 @@ public class SaleDAO {
 	
 	public List<Sale> getAll() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			return session.createQuery("FROM Sale s ORDER BY s.saleDate DESC", Sale.class).getResultList();
+			return session.createQuery("FROM Sale sale ORDER BY sale.saleDate DESC", Sale.class).getResultList();
 		}
 	}
 	
 	public List<Sale> getByDate(LocalDate date) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			Query<Sale> q = session.createQuery("FROM Sale s WHERE s.saleDate = :d ORDER BY s.saleDate DESC", Sale.class);
+			Query<Sale> q = session.createQuery("FROM Sale sale WHERE sale.saleDate = :d ORDER BY sale.saleDate DESC", Sale.class);
 			q.setParameter("d", date);
 			return q.getResultList();
 		}
@@ -69,7 +69,7 @@ public class SaleDAO {
 	
 	public List<Sale> getBetweenDates(LocalDate start, LocalDate end) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			Query<Sale> q = session.createQuery("FROM Sale s WHERE s.saleDate BETWEEN :st AND :en ORDER BY s.saleDate DESC", Sale.class);
+			Query<Sale> q = session.createQuery("FROM Sale sale WHERE sale.saleDate BETWEEN :st AND :en ORDER BY sale.saleDate DESC", Sale.class);
 			q.setParameter("st", start);
 			q.setParameter("en", end);
 			return q.getResultList();
@@ -78,7 +78,7 @@ public class SaleDAO {
 	
 	public List<Sale> getBySeller(int sellerId) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			Query<Sale> q = session.createQuery("FROM Sale s WHERE s.seller.id = :id ORDER BY s.saleDate DESC", Sale.class);
+			Query<Sale> q = session.createQuery("FROM Sale sale WHERE sale.seller.id = :id ORDER BY sale.saleDate DESC", Sale.class);
 			q.setParameter("id", sellerId);
 			return q.getResultList();
 		}
@@ -86,7 +86,7 @@ public class SaleDAO {
 	
 	public List<Sale> getByClient(int buyerId) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			Query<Sale> q = session.createQuery("FROM Sale s WHERE s.client.id = :id ORDER BY s.saleDate DESC", Sale.class);
+			Query<Sale> q = session.createQuery("FROM Sale sale WHERE sale.client.id = :id ORDER BY sale.saleDate DESC", Sale.class);
 			q.setParameter("id", buyerId);
 			return q.getResultList();
 		}
@@ -95,7 +95,7 @@ public class SaleDAO {
 	public Object[] getTopSeller() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			return session.createQuery(
-					"SELECT s.seller, SUM(s.product.price) AS total FROM Sale s GROUP BY s.seller ORDER BY total DESC",
+					"SELECT sale.seller, SUM(sale.product.price) AS total FROM Sale sale GROUP BY sale.seller ORDER BY total DESC",
 					Object[].class).setMaxResults(1).uniqueResult();
 		}
 	}
@@ -103,21 +103,21 @@ public class SaleDAO {
 	public Object[] getTopClient() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			return session.createQuery(
-					"SELECT s.client, SUM(s.product.price) AS total FROM Sale s GROUP BY s.client ORDER BY total DESC",
+					"SELECT sale.client, SUM(sale.product.price) AS total FROM Sale sale GROUP BY sale.client ORDER BY total DESC",
 					Object[].class).setMaxResults(1).uniqueResult();
 		}
 	}
 	
 	public Double getAveragePurchase() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			return session.createQuery("SELECT AVG(s.product.price) FROM Sale s", Double.class).getSingleResult();
+			return session.createQuery("SELECT AVG(sale.product.price) FROM Sale sale", Double.class).getSingleResult();
 		}
 	}
 	
 	public Object[] getMostPopularProduct() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			return session.createQuery(
-					"SELECT s.product, COUNT(s.product) AS count FROM Sale s GROUP BY s.product ORDER BY count DESC",
+					"SELECT sale.product, COUNT(sale.product) AS count FROM Sale sale GROUP BY sale.product ORDER BY count DESC",
 					Object[].class).setMaxResults(1).uniqueResult();
 		}
 	}

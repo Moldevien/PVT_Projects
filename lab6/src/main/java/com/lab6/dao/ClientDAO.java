@@ -10,9 +10,9 @@ import java.util.List;
 public class ClientDAO {
 	public void add(Client client) {
 		Transaction tx = null;
-		try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-			tx = s.beginTransaction();
-			s.persist(client);
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			tx = session.beginTransaction();
+			session.persist(client);
 			tx.commit();
 		} catch (Exception e) {
 			if (tx != null) tx.rollback();
@@ -22,9 +22,9 @@ public class ClientDAO {
 	
 	public void update(Client client) {
 		Transaction tx = null;
-		try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-			tx = s.beginTransaction();
-			s.merge(client);
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			tx = session.beginTransaction();
+			session.merge(client);
 			tx.commit();
 		} catch (Exception e) {
 			if (tx != null) tx.rollback();
@@ -34,10 +34,10 @@ public class ClientDAO {
 	
 	public void delete(int id) {
 		Transaction tx = null;
-		try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-			tx = s.beginTransaction();
-			Client client = s.get(Client.class, id);
-			if (client != null) s.remove(client);
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			tx = session.beginTransaction();
+			Client client = session.get(Client.class, id);
+			if (client != null) session.remove(client);
 			tx.commit();
 		} catch (Exception e) {
 			if (tx != null) tx.rollback();
@@ -46,21 +46,21 @@ public class ClientDAO {
 	}
 	
 	public Client getById(int id) {
-		try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-			return s.get(Client.class, id);
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			return session.get(Client.class, id);
 		}
 	}
 	
 	public List<Client> getAll() {
-		try (Session s = HibernateUtil.getSessionFactory().openSession()) {
-			return s.createQuery("FROM Client", Client.class).getResultList();
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			return session.createQuery("FROM Client", Client.class).getResultList();
 		}
 	}
 	
 	public Object[] getTop() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			return session.createQuery(
-					"SELECT s.client, SUM(s.product.price) AS total FROM Sale s GROUP BY s.client ORDER BY total DESC",
+					"SELECT sale.client, SUM(sale.product.price) AS total FROM Sale sale GROUP BY sale.client ORDER BY total DESC",
 					Object[].class).setMaxResults(1).uniqueResult();
 		}
 	}
