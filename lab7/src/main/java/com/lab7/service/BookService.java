@@ -1,6 +1,6 @@
 package com.lab7.service;
 
-import com.lab7.dto.BestsellerDto;
+import com.lab7.dto.BookDto;
 import com.lab7.model.Book;
 import com.lab7.repository.BookRepository;
 import org.springframework.data.domain.PageRequest;
@@ -74,11 +74,11 @@ public class BookService {
 		return repo.findLatestBookByAuthor(author).stream().findFirst().orElse(null);
 	}
 	
-	public List<Book> byGenreAuthorYear(String genre, String author, int year) {
+	public List<Book> findByGenreAuthorYear(String genre, String author, int year) {
 		return repo.findByGenreAndAuthorAndYear(genre, author, year);
 	}
 	
-	public List<BestsellerDto> bestsellers() {
+	public List<BookDto> bestsellers() {
 		return repo.findBestsellers(PageRequest.of(0, 10));
 	}
 }

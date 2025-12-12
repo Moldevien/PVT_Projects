@@ -1,6 +1,6 @@
 package com.lab7.controller;
 
-import com.lab7.dto.BestsellerDto;
+import com.lab7.dto.BookDto;
 import com.lab7.model.Book;
 import com.lab7.service.BookService;
 import org.springframework.web.bind.annotation.*;
@@ -78,7 +78,7 @@ public class BookController {
 			@RequestParam String genre,
 			@RequestParam String author,
 			@RequestParam int year) {
-		return service.byGenreAuthorYear(genre, author, year);
+		return service.findByGenreAuthorYear(genre, author, year);
 	}
 	
 	@GetMapping("/find/description")
@@ -87,7 +87,7 @@ public class BookController {
 	}
 	
 	@GetMapping("/bestsellers")
-	public List<BestsellerDto> bestsellers() {
+	public List<BookDto> bestsellers() {
 		return service.bestsellers();
 	}
 }

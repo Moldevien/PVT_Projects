@@ -1,6 +1,6 @@
 package com.lab7.repository;
 
-import com.lab7.dto.BestsellerDto;
+import com.lab7.dto.BookDto;
 import com.lab7.model.Book;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -48,9 +48,17 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 	
 	// Бестселери – наприклад, top 10 по тиражу
 	@Query("""
-			SELECT new com.lab7.dto.BestsellerDto(book.title, book.author, book.genre)
+			SELECT new com.lab7.dto.BookDto(
+				book.id,
+				book.title,
+				book.author,
+				book.year,
+				book.publisher,
+				book.genre,
+				book.pages
+			)
 			FROM Book book
 			ORDER BY book.circulation DESC
 			""")
-	List<BestsellerDto> findBestsellers(Pageable pageable);
+	List<BookDto> findBestsellers(Pageable pageable);
 }

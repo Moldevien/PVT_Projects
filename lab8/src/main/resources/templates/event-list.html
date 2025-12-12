@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html><head><title>Подія</title></head><body>
+<h1>Подія</h1>
+<form th:action="@{/events}" method="get">
+    <input name="q" placeholder="Назва події"/>
+    <button type="submit">Пошук</button>
+</form>
+<!--<ul>
+    <li th:each="event : ${events}">
+        <a th:href="@{|/events/${event.id}|}"
+           th:text="${event.name} + ' (' + ${event.eventDate} + ') - ' + ${event.place.name}"></a>
+    </li>
+</ul>-->
+<table border="1">
+    <tr>
+        <th>Назва події</th>
+        <th>Дата</th>
+        <th>Місце</th>
+        <th>Дії</th>
+    </tr>
+    <tr th:each="event : ${events}">
+        <td th:text="${event.name}"></td>
+        <td th:text="${event.eventDate}"></td>
+        <td th:text="${event.place.name}"></td>
+        <td><a th:href="@{|/events/${event.id}|}">Деталі</a></td>
+    </tr>
+</table>
+<br>
+<a th:href="@{/events/create}">Створити нову подію</a>
+</body>
+</html>
