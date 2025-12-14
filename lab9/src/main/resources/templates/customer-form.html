@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html><head><title>Створити покупця</title></head><body>
+<a th:href="@{/events}">Назад до списку</a>
+<h1>Створити покупця</h1>
+<form th:action="@{/customers/create}" th:object="${customer}" method="post">
+    Ім'я: <input th:field="*{name}"/><br>
+    Пошта: <input th:field="*{email}"/><br>
+    Телефон: <input th:field="*{phone}"/><br>
+    <button type="submit">Створити</button>
+</form>
+</body>
+</html>

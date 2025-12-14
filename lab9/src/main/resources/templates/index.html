@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html><head><title>Купівля квитків - Меню</title></head><body>
+<h1>Купівля квитків</h1>
+<ul>
+    <li><a th:href="@{/events}">Події</a></li>
+<!--    <li><a th:href="@{/customers/create}">Створити замовника</a></li>-->
+</ul>
+<a th:if="${error}" th:text="${error}"></a>
+</body>
+</html>

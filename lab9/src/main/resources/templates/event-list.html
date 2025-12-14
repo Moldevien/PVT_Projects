@@ -1,6 +1,16 @@
 <!DOCTYPE html>
-<html><head><title>Подія</title></head><body>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head><title>Подія</title></head><body>
 <a th:href="@{/}">Головне меню</a>
+<div sec:authorize="isAuthenticated()">
+    <hr>
+    Користувач: <b th:text="${#authentication.name}"></b> |
+    <form th:action="@{/logout}" method="post" style="display:inline;">
+        <button type="submit">Вийти</button>
+    </form>
+    <hr>
+</div>
+
 <h1>Події</h1>
 
 <!-- Пошук за назвою -->
@@ -9,11 +19,13 @@
     <button type="submit">Пошук</button>
 </form>
 <br>
+
 <!-- Пошук майбутніх подій -->
 <form th:action="@{/events/upcoming}" method="get">
     <button type="submit">Показати майбутні події</button>
 </form>
 <br>
+
 <table border="1">
     <tr>
         <th>Назва події</th>
@@ -31,6 +43,6 @@
     </tr>
 </table>
 <br>
-<a th:href="@{/events/create}">Створити нову подію</a>
+<a sec:authorize="hasRole('ADMIN')" th:href="@{/events/create}">Створити нову подію</a>
 </body>
 </html>
