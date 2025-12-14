@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
 	List<Event> findByName(String name);
-	List<Event> findByEventDate(LocalDate date); // майбутні
+	List<Event> findByEventDateAfter(LocalDate date); // майбутні
 	boolean existsByPlaceAndEventDate(Place place, LocalDate date); // перевірка унікальності місця/дата
 }

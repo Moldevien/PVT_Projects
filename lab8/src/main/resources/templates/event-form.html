@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html><head><title>Створити подію</title></head><body>
+<a th:href="@{/events}">Назад до списку</a>
 <h1>Створити подію</h1>
 
 <form th:action="@{/events/create}" th:object="${eventDto}" method="post">
@@ -8,11 +9,10 @@
     Назва місця: <input type="text" th:field="*{place.name}"/><br>
     Адреса: <input type="text" th:field="*{place.address}"/><br>
 
-    <!-- Для простоти — дозволяємо додати декілька пакетів як JSON у textarea -->
-    Ticket packs (JSON array) <br>
-    <textarea th:field="*{tickets}" rows="6" cols="60">
-        [{"cost":100,"count":10,"number":"A-"},{"cost":50,"count":20,"number":"B-"}]
-    </textarea>
+    <h3>Квитки</h3>
+
+    <input name="tickets[0].cost" placeholder="Ціна">
+    <input name="tickets[0].count" placeholder="Кількість">
     <br>
     <button type="submit">Створити</button>
 </form>

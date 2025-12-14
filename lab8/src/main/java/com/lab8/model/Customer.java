@@ -21,13 +21,6 @@ public class Customer {
 	private String email;
 	private String phone;
 	
-	@OneToMany(mappedBy = "customer")
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
 	private List<Ticket> tickets;
-	
-	public Customer(String name, String email, String phone, List<Ticket> tickets) {
-		this.name = name;
-		this.email = email;
-		this.phone = phone;
-		this.tickets = tickets;
-	}
 }

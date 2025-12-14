@@ -27,12 +27,6 @@ public class CustomerController {
 	@PostMapping("/create")
 	public String create(@ModelAttribute Customer customer) {
 		customerService.add(customer);
-		return "redirect:/";
+		return "redirect:/events";
 	}
-	
-	/*@GetMapping("/list")
-	public String list(Model model) {
-		model.addAttribute("customers", customerService.findAll());
-		return "customer-list";
-	}*/
 }

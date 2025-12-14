@@ -26,21 +26,48 @@ public class DataConfig {
 	@Bean
 	public CommandLineRunner commandLineRunner() {
 		return args -> {
+			
 			if (eventService.findAll().isEmpty()) {
-				EventDTO dto = new EventDTO();
-				dto.setName("Rock Concert");
-				dto.setEventDate(LocalDate.now().plusDays(7));
-				dto.setPlace(new PlaceDTO("Big Arena", "Main st 1"));
-				dto.setTickets(List.of(new TicketDTO(100, 5, "A-"), new TicketDTO(50, 10, "B-")));
-				eventService.add(dto);
+				EventDTO rock = new EventDTO();
+				rock.setName("Rock Concert");
+				rock.setEventDate(LocalDate.now().plusDays(7));
+				rock.setPlace(new PlaceDTO("Big Arena", "Main st 1"));
+				rock.setTickets(List.of(new TicketDTO(100, 5)));
+				eventService.add(rock);
+				
+				EventDTO jazz = new EventDTO();
+				jazz.setName("Jazz Night");
+				jazz.setEventDate(LocalDate.now().plusDays(14));
+				jazz.setPlace(new PlaceDTO("Jazz Club", "Blue st 12"));
+				jazz.setTickets(List.of(new TicketDTO(80, 10)));
+				eventService.add(jazz);
+				
+				EventDTO theatre = new EventDTO();
+				theatre.setName("Theatre Play");
+				theatre.setEventDate(LocalDate.now().minusDays(3));
+				theatre.setPlace(new PlaceDTO("Drama Hall", "Old st 5"));
+				theatre.setTickets(List.of(new TicketDTO(60, 8)));
+				eventService.add(theatre);
 			}
 			
 			if (customerService.findAll().isEmpty()) {
-				Customer customer = new Customer();
-				customer.setName("Ivan");
-				customer.setEmail("ivan@example.com");
-				customer.setPhone("+380501112233");
-				customerService.add(customer);
+				Customer c1 = new Customer();
+				c1.setName("Ivan Petrenko");
+				c1.setEmail("ivan@example.com");
+				c1.setPhone("+380501112233");
+				customerService.add(c1);
+				
+				Customer c2 = new Customer();
+				c2.setName("Olena Shevchenko");
+				c2.setEmail("olena@example.com");
+				c2.setPhone("+380672223344");
+				customerService.add(c2);
+				
+				Customer c3 = new Customer();
+				c3.setName("Andrii Kovalenko");
+				c3.setEmail("andrii@example.com");
+				c3.setPhone("+380931234567");
+				customerService.add(c3);
 			}
 		};
 	}

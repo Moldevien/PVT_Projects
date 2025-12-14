@@ -38,7 +38,7 @@ public class EventService {
 		
 		// 2. перевірка: чи уже є event в цьому place у ту ж дату
 		if (eventRepo.existsByPlaceAndEventDate(place, dto.getEventDate())) {
-			throw new IllegalStateException("Place already has an event on this date");
+			throw new IllegalStateException("У цьому місці вже є подія на цю дату");
 		}
 		
 		// 3. створити Event
@@ -49,12 +49,12 @@ public class EventService {
 		
 		// 4. створити tickets (генерація номерів)
 		List<Ticket> tickets = new ArrayList<>();
-		long serial = 1L;
+		int seatNumber = 1;
 		for (TicketDTO pack : dto.getTickets()) {
 			for (int i = 0; i < pack.getCount(); i++) {
 				Ticket ticket = new Ticket();
 				ticket.setCost(pack.getCost());
-				ticket.setNumber((pack.getNumber() != null ? pack.getNumber() : "") + serial++);
+				ticket.setSeatNumber(seatNumber++);
 				ticket.setStatus(TicketStatus.FREE);
 				ticket.setEvent(event);
 				tickets.add(ticket);
@@ -64,20 +64,6 @@ public class EventService {
 		
 		// 5. зберегти Event (cascade зберігає tickets)
 		return eventRepo.save(event);
-	}
-	
-	@Transactional
-	public Event update(EventDTO dto) {
-		Event event = eventRepo.findById(dto.getId()).orElseThrow();
-		event.setName(dto.getName());
-		event.setEventDate(dto.getEventDate());
-		// place і tickets не оновлюємо
-		return eventRepo.save(event);
-	}
-	
-	@Transactional
-	public void delete(Long id) {
-		eventRepo.deleteById(id);
 	}
 	
 	public Event findById(Long id) {
@@ -93,19 +79,11 @@ public class EventService {
 	}
 	
 	public List<Event> findUpcoming() {
-		return eventRepo.findByEventDate(LocalDate.now());
+		return eventRepo.findByEventDateAfter(LocalDate.now());
 	}
 	
 	public List<Ticket> findFreeTickets(String eventName) {
 		return ticketRepo.findByEventNameAndStatus(eventName, TicketStatus.FREE);
 	}
-	
-	/*public void assignTicketToCustomer(Long ticketId, Customer customer) {
-		Ticket ticket = ticketRepo.findById(ticketId)
-				.orElseThrow(() -> new RuntimeException("Ticket not found"));
-		ticket.setCustomer(customer);
-		ticket.setStatus(TicketStatus.SOLD);
-		ticketRepo.save(ticket);
-	}*/
 }
 

@@ -25,10 +25,4 @@ public class TicketController {
 		}
 		return "redirect:/events";
 	}
-	
-	/*@GetMapping("/list")
-	public String list(Model model) {
-		model.addAttribute("tickets", ticketService.findAll());
-		return "customer-list";
-	}*/
 }

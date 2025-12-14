@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html><head><title>Подія</title></head><body>
+<a th:href="@{/events}">Назад до списку</a>
+
 <h1 th:text="${event.name}">Подія</h1>
+
 <p>Дата: <span th:text="${event.eventDate}"></span></p>
 <p>Місце: <span th:text="${event.place.name}"></span></p>
 
 <h2>Вільні квитки</h2>
+
 <form th:action="@{/tickets/buy}" method="post">
     <select name="ticketId">
-        <option th:each="ticket : ${event.tickets}"
-                th:if="${ticket.status.name() == 'FREE'}"
+        <option th:each="ticket : ${freeTickets}"
                 th:value="${ticket.id}"
-                th:text="${ticket.number} + ' — ' + ${ticket.cost}"></option>
+                th:text="${ticket.seatNumber} + ' — ' + ${ticket.cost}"></option>
     </select>
 
-    Id покупця:<input type="number" name="customerId"/><br>
+    Id покупця:<input type="number" name="customerId" required/><br>
     <button type="submit">Купити</button>
 </form>
 
@@ -26,7 +29,7 @@
         <th>Покупець</th>
     </tr>
     <tr th:each="ticket : ${event.tickets}">
-        <td th:text="${ticket.number}"></td>
+        <td th:text="${ticket.seatNumber}"></td>
         <td th:text="${ticket.cost}"></td>
         <td th:text="${ticket.status}"></td>
         <td th:text="${ticket.customer != null ? ticket.customer.name : ''}"></td>

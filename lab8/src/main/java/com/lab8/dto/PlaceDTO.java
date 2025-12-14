@@ -14,7 +14,7 @@ public class PlaceDTO {
 }
 
 //public record PlaceDTO(
-//		Long id,
+//		//Long id,
 //		String name,
 //		String address
 //) {

@@ -19,27 +19,11 @@ public class CustomerService {
 		return repo.save(customer);
 	}
 	
-	public Customer update(Long id, Customer newCustomer) {
-		Customer old = repo.findById(id).orElseThrow();
-		old.setName(newCustomer.getName());
-		old.setEmail(newCustomer.getEmail());
-		old.setPhone(newCustomer.getPhone());
-		return repo.save(old);
-	}
-	
-	public void delete(Long id) {
-		repo.deleteById(id);
-	}
-	
 	public Customer findById(Long id) {
 		return repo.findById(id).orElseThrow();
 	}
 	
 	public List<Customer> findAll() {
 		return repo.findAll();
-	}
-	
-	public Optional<Customer> findByEmail(String email) {
-		return repo.findByEmail(email);
 	}
 }

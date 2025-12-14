@@ -15,24 +15,28 @@ public class EventController {
 		this.eventService = eventService;
 	}
 	
-	@GetMapping("/create")
-	public String createForm(Model model) {
-		model.addAttribute("eventDto", new EventDTO());
-		return "event-form";
-	}
-	
-	@PostMapping("/create")
-	public String create(@ModelAttribute EventDTO dto) {
-		eventService.add(dto);
-		return "redirect:/events";
-	}
-	
+	// Список всіх подій
 	@GetMapping
 	public String list(Model model) {
 		model.addAttribute("events", eventService.findAll());
 		return "event-list";
 	}
 	
+	// Форма створення нової події
+	@GetMapping("/create")
+	public String createForm(Model model) {
+		model.addAttribute("eventDto", new EventDTO());
+		return "event-form";
+	}
+	
+	// Обробка форми створення нової події
+	@PostMapping("/create")
+	public String create(@ModelAttribute EventDTO dto) {
+		eventService.add(dto);
+		return "redirect:/events";
+	}
+	
+	// Деталі події
 	@GetMapping("/{id}")
 	public String details(@PathVariable Long id, Model model) {
 		model.addAttribute("event", eventService.findById(id));
@@ -40,50 +44,18 @@ public class EventController {
 		return "event-details";
 	}
 	
+	// Список майбутніх подій
+	@GetMapping("/upcoming")
+	public String upcomingEvents(Model model) {
+		model.addAttribute("events", eventService.findUpcoming());
+		return "event-list";
+	}
+	
+	// Пошук подій за назвою
 	@GetMapping("/search")
-	public String search(@RequestParam String q, Model model) {
-		model.addAttribute("events", eventService.findByName(q));
+	public String search(@RequestParam String eventName, Model model) {
+		model.addAttribute("events", eventName.isEmpty() ? eventService.findAll() : eventService.findByName(eventName));
 		return "event-list";
 	}
-	
-	/*private EventService eventService;
-	private CustomerRepository customerRepo;
-	
-	public EventController(EventService eventService, CustomerRepository customerRepo) {
-		this.eventService = eventService;
-		this.customerRepo = customerRepo;
-	}
-	
-	@GetMapping("/create")
-	public String showEventForm(Model model) {
-		model.addAttribute("eventDto", new EventDTO());
-		return "event-form"; // Thymeleaf шаблон
-	}
-	
-	@PostMapping("/create")
-	public String createEvent(@ModelAttribute EventDTO eventDto) {
-		eventService.createEvent(eventDto);
-		return "redirect:/events/list";
-	}
-	
-	@GetMapping("/list")
-	public String listEvents(Model model) {
-		model.addAttribute("events", eventService.findUpcomingEvents());
-		return "event-list";
-	}
-	
-	@GetMapping("/free-tickets")
-	public String freeTickets(@RequestParam String eventName, Model model) {
-		model.addAttribute("tickets", eventService.findFreeTickets(eventName));
-		return "ticket-list";
-	}
-	
-	@PostMapping("/assign-ticket")
-	public String assignTicket(@RequestParam Long ticketId, @RequestParam Long customerId) {
-		Customer customer = customerRepo.findById(customerId)
-				.orElseThrow(() -> new RuntimeException("Customer not found"));
-		eventService.assignTicketToCustomer(ticketId, customer);
-		return "redirect:/events/list";
-	}*/
 }
 

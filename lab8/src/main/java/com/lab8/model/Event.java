@@ -26,11 +26,4 @@ public class Event {
 	
 	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Ticket> tickets;
-	
-	public Event(String name, LocalDate eventDate, Place place, List<Ticket> tickets) {
-		this.name = name;
-		this.eventDate = eventDate;
-		this.place = place;
-		this.tickets = tickets;
-	}
 }

@@ -22,10 +22,4 @@ public class Place {
 	
 	@OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Event> events = new ArrayList<>();
-	
-	public Place(String name, String address, List<Event> events) {
-		this.name = name;
-		this.address = address;
-		this.events = events;
-	}
 }

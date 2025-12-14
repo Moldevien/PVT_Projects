@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html><head><title>Подія</title></head><body>
-<h1>Подія</h1>
-<form th:action="@{/events}" method="get">
-    <input name="q" placeholder="Назва події"/>
+<a th:href="@{/}">Головне меню</a>
+<h1>Події</h1>
+
+<!-- Пошук за назвою -->
+<form th:action="@{/events/search}" method="get">
+    <input name="eventName" placeholder="Назва події"/>
     <button type="submit">Пошук</button>
 </form>
-<!--<ul>
-    <li th:each="event : ${events}">
-        <a th:href="@{|/events/${event.id}|}"
-           th:text="${event.name} + ' (' + ${event.eventDate} + ') - ' + ${event.place.name}"></a>
-    </li>
-</ul>-->
+
+<!-- Пошук майбутніх подій -->
+<form th:action="@{/events/upcoming}" method="get">
+    <button type="submit">Показати майбутні події</button>
+</form>
+
 <table border="1">
     <tr>
         <th>Назва події</th>
@@ -22,7 +25,9 @@
         <td th:text="${event.name}"></td>
         <td th:text="${event.eventDate}"></td>
         <td th:text="${event.place.name}"></td>
-        <td><a th:href="@{|/events/${event.id}|}">Деталі</a></td>
+        <td>
+            <a th:href="@{|/events/${event.id}|}">Деталі</a>
+        </td>
     </tr>
 </table>
 <br>

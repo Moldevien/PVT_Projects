@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventDTO {
-	private Long id;
+	//private Long id;
 	private String name;
 	private LocalDate eventDate;
 	private PlaceDTO place;
@@ -19,10 +19,10 @@ public class EventDTO {
 }
 
 //public record EventDTO(
-//		Long id,
-//		LocalDate eventDate,
+//		//Long id,
 //		String name,
-//		PlaceDTO place,
-//		List<TicketDTO> ticketPacks
+//		LocalDate eventDate,
+//		//PlaceDTO place,
+//		List<TicketDTO> tickets
 //) {
 //}

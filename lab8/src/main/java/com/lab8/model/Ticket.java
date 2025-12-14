@@ -15,7 +15,7 @@ public class Ticket {
 	private Long id;
 	
 	private double cost;
-	private String number; // номер місця або унікальний код
+	private int seatNumber ; // номер місця або унікальний код
 	
 	@Enumerated(EnumType.STRING)
 	private TicketStatus status = TicketStatus.FREE;
@@ -25,12 +25,4 @@ public class Ticket {
 	
 	@ManyToOne
 	private Event event;
-	
-	public Ticket(double cost, String number, TicketStatus status, Customer customer, Event event) {
-		this.cost = cost;
-		this.number = number;
-		this.status = status;
-		this.customer = customer;
-		this.event = event;
-	}
 }

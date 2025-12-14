@@ -4,12 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class CustomerDTO {
-	//private Long id;
-	private String name;
-	private String email;
-	private String phone;
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
+//public class CustomerDTO {
+//	//private Long id;
+//	private String name;
+//	private String email;
+//	private String phone;
+//}
+
+public record CustomerDTO(
+		Long id,
+		String name,
+		String email,
+		String phone
+) {
 }

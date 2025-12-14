@@ -25,35 +25,16 @@ public class TicketService {
 	//public Ticket assignTicketToCustomer(Long ticketId, Long customerId) {
 	@Transactional
 	public Ticket add(Long ticketId, Long customerId) {
-		Ticket ticket = ticketRepo.findById(ticketId)
-				.orElseThrow(() -> new RuntimeException("Ticket not found"));
+		Ticket ticket = ticketRepo.findById(ticketId).orElseThrow();
 		
 		if (ticket.getStatus() == TicketStatus.SOLD) {
-			throw new IllegalStateException("Ticket already sold");
+			throw new IllegalStateException("Квиток вже проданий");
 		}
 		
 		Customer customer = customerRepo.findById(customerId).orElseThrow();
 		ticket.setCustomer(customer);
 		ticket.setStatus(TicketStatus.SOLD);
 		return ticketRepo.save(ticket);
-	}
-	
-	@Transactional
-	public Ticket update(Long id, Long ticketId, Long customerId) {
-		Ticket ticket = ticketRepo.findById(ticketId)
-				.orElseThrow(() -> new RuntimeException("Ticket not found"));
-		if (ticket.getStatus() == TicketStatus.SOLD) {
-			throw new IllegalStateException("Ticket already sold");
-		}
-		
-		Customer customer = customerRepo.findById(customerId).orElseThrow();
-		ticket.setCustomer(customer);
-		ticket.setStatus(TicketStatus.SOLD);
-		return ticketRepo.save(ticket);
-	}
-	
-	public void delete(Long id) {
-		ticketRepo.deleteById(id);
 	}
 	
 	public Ticket findById(Long id) {

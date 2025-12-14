@@ -12,5 +12,5 @@ import java.util.List;
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
 	List<Ticket> findByEventNameAndStatus(String eventName, TicketStatus status);
 	List<Ticket> findByEventAndStatus(Event event, TicketStatus status);
-	List<Ticket> findByStatus(TicketStatus status);
+	//List<Ticket> findByStatus(TicketStatus status);
 }
