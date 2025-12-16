@@ -5,10 +5,12 @@
     List<Product> products = (List<Product>) request.getAttribute("products");
     String title = (String) request.getAttribute("title");
 %>
-<html><head><title><%= title %></title></head>
-<body>
+<html><head><title><%= title %></title></head><body>
+
 <a href="../index.jsp">Меню</a> | <a href="new">Додати товар</a>
+
 <h1>Товари</h1>
+
 <table border="1">
     <tr>
         <th>ID</th>
@@ -27,4 +29,5 @@
     </tr>
     <% } %>
 </table>
+
 </body></html>

@@ -5,7 +5,7 @@ import java.io.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
-@WebServlet(name = "helloServlet", value = "/hello-servlet")
+@WebServlet(name = "helloServlet", value = "/Task4_2")
 public class HelloServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html");
@@ -18,20 +18,25 @@ public class HelloServlet extends HttpServlet {
 			if (numStr != null && !numStr.trim().isEmpty()) {
 				try {
 					int n = Integer.parseInt(numStr.trim());
+					
 					out.println("<h2>Таблиця множення для " + n + "</h2>");
-					out.println("<table border='1' cellpadding='5' cellspacing='0'>");
+					out.println("<table border='1'>");
+					
 					for (int i = 1; i <= 10; i++) {
 						out.println("<tr><td>" + n + " × " + i + "</td><td>" + (n * i) + "</td></tr>");
 					}
+					
 					out.println("</table>");
 				} catch (Exception e) {
 					out.println("<p style='color:red'>Виникла помилка.</p>");
 				}
+			} else {
+				out.println("<p style='color:red'>Будь ласка, введіть число.</p>");
 			}
-			out.println("<br><br>");
-			out.println("<a href=\"index.jsp\">Повернутись</a>");
 			
-			out.println("</body></html>");
+			out.println(
+					"<br><a href=\"index.jsp\">Повернутись</a>" +
+					"</body></html>");
 		}
 	}
 }

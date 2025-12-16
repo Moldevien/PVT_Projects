@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 
-@WebServlet(name = "SalesServlet", urlPatterns = {
+/*@WebServlet(name = "SalesServlet", urlPatterns = {
 		"/", "/index",
 		"/seller/list", "/seller/new", "/seller/insert", "/seller/edit", "/seller/update", "/seller/delete",
 		"/clients", "/client/new", "/client/insert", "/client/edit", "/client/update", "/client/delete",
@@ -20,7 +20,7 @@ import java.time.LocalDate;
 		"/sales", "/sale/new", "/sale/insert", "/sale/edit", "/sale/update", "/sale/delete",
 		"/reports/sales-by-date", "/reports/sales-between", "/reports/sales-by-seller", "/reports/sales-by-client",
 		"/reports/top-seller", "/reports/top-client", "/reports/average-purchase", "/reports/popular-product"
-})
+})*/
 public class SalesServlet extends HttpServlet {
 	private SellerDAO sellerDAO;
 	private ClientDAO clientDAO;
@@ -46,9 +46,8 @@ public class SalesServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String path = request.getServletPath();
 		try {
-			switch (path) {
+			switch (request.getServletPath()) {
 				case "/":
 				case "/index": {
 					request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -193,10 +192,7 @@ public class SalesServlet extends HttpServlet {
 					break;
 				}
 				
-				default: {
-					response.sendError(HttpServletResponse.SC_NOT_FOUND);
-					break;
-				}
+				default: { response.sendError(HttpServletResponse.SC_NOT_FOUND); break; }
 			}
 		} catch (Exception e) {
 			throw new ServletException(e);
@@ -230,16 +226,16 @@ public class SalesServlet extends HttpServlet {
 	/** Показ форми редагування продавця */
 	private void showSellerEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
-		Seller s = sellerDAO.getById(id);
-		request.setAttribute("seller", s);
+		Seller seller = sellerDAO.getById(id);
+		request.setAttribute("seller", seller);
 		request.getRequestDispatcher("seller-form.jsp").forward(request, response);
 	}
 	
 	/** Оновлення продавця */
 	private void updateSeller(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
-		Seller s = new Seller(id, request.getParameter("name"), request.getParameter("phone"), request.getParameter("email"));
-		sellerDAO.update(s);
+		Seller seller = new Seller(id, request.getParameter("name"), request.getParameter("phone"), request.getParameter("email"));
+		sellerDAO.update(seller);
 		response.sendRedirect("list");
 	}
 	
@@ -274,16 +270,16 @@ public class SalesServlet extends HttpServlet {
 	/** Показ форми редагування клієнта */
 	private void showClientEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
-		Client b = clientDAO.getById(id);
-		request.setAttribute("client", b);
+		Client client = clientDAO.getById(id);
+		request.setAttribute("client", client);
 		request.getRequestDispatcher("client-form.jsp").forward(request, response);
 	}
 	
 	/** Оновлення клієнта */
 	private void updateClient(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
-		Client b = new Client(id, request.getParameter("name"), request.getParameter("phone"), request.getParameter("email"));
-		clientDAO.update(b);
+		Client client = new Client(id, request.getParameter("name"), request.getParameter("phone"), request.getParameter("email"));
+		clientDAO.update(client);
 		response.sendRedirect("list");
 	}
 	
@@ -319,16 +315,16 @@ public class SalesServlet extends HttpServlet {
 	/** Показ форми редагування товару */
 	private void showProductEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
-		Product p = productDAO.getById(id);
-		request.setAttribute("product", p);
+		Product product = productDAO.getById(id);
+		request.setAttribute("product", product);
 		request.getRequestDispatcher("product-form.jsp").forward(request, response);
 	}
 	
 	/** Оновлення товару */
 	private void updateProduct(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
-		Product p = new Product(id, request.getParameter("name"), Double.parseDouble(request.getParameter("price")));
-		productDAO.update(p);
+		Product product = new Product(id, request.getParameter("name"), Double.parseDouble(request.getParameter("price")));
+		productDAO.update(product);
 		response.sendRedirect("list");
 	}
 	
@@ -363,10 +359,10 @@ public class SalesServlet extends HttpServlet {
 		int clientId = Integer.parseInt(request.getParameter("clientId"));
 		int productId = Integer.parseInt(request.getParameter("productId"));
 		LocalDate date = LocalDate.parse(request.getParameter("saleDate"));
-		Seller s = sellerDAO.getById(sellerId);
-		Client b = clientDAO.getById(clientId);
-		Product p = productDAO.getById(productId);
-		saleDAO.add(new Sale(s, b, p, date));
+		Seller seller = sellerDAO.getById(sellerId);
+		Client client = clientDAO.getById(clientId);
+		Product product = productDAO.getById(productId);
+		saleDAO.add(new Sale(seller, client, product, date));
 		response.sendRedirect("list");
 	}
 	
@@ -388,10 +384,10 @@ public class SalesServlet extends HttpServlet {
 		int clientId = Integer.parseInt(request.getParameter("clientId"));
 		int productId = Integer.parseInt(request.getParameter("productId"));
 		LocalDate date = LocalDate.parse(request.getParameter("saleDate"));
-		Seller s = sellerDAO.getById(sellerId);
-		Client b = clientDAO.getById(clientId);
-		Product p = productDAO.getById(productId);
-		Sale sale = new Sale(id, s, b, p, date);
+		Seller seller = sellerDAO.getById(sellerId);
+		Client client = clientDAO.getById(clientId);
+		Product product = productDAO.getById(productId);
+		Sale sale = new Sale(id, seller, client, product, date);
 		saleDAO.update(sale);
 		response.sendRedirect("list");
 	}
@@ -466,7 +462,7 @@ public class SalesServlet extends HttpServlet {
 	private void popularProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Object[] r = saleDAO.getMostPopularProduct();
 		request.setAttribute("result", r);
-		request.getRequestDispatcher("popular-product.jsp").forward(request, response);
+		request.getRequestDispatcher("top-product.jsp").forward(request, response);
 	}
 	
 	// ---------- Demo data ----------

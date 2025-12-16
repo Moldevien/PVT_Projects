@@ -5,10 +5,12 @@
     List<Client> clients = (List<Client>) request.getAttribute("clients");
     String title = (String) request.getAttribute("title");
 %>
-<html><head><title><%= title %></title></head>
-<body>
+<html><head><title><%= title %></title></head><body>
+
 <a href="../index.jsp">Меню</a> | <a href="new">Додати клієнта</a>
+
 <h1>Клієнти</h1>
+
 <table border="1">
     <tr>
         <th>ID</th>
@@ -30,4 +32,5 @@
     </tr>
     <% } %>
 </table>
+
 </body></html>

@@ -5,10 +5,12 @@
     List<Seller> sellers = (List<Seller>) request.getAttribute("sellers");
     String title = (String) request.getAttribute("title");
 %>
-<html><head><title><%= title %></title></head>
-<body>
+<html><head><title><%= title %></title></head><body>
+
 <a href="../index.jsp">Меню</a> | <a href="new">Додати продавця</a>
+
 <h1>Продавці</h1>
+
 <table border="1">
     <tr>
         <th>ID</th>
@@ -30,4 +32,5 @@
     </tr>
     <% } %>
 </table>
+
 </body></html>

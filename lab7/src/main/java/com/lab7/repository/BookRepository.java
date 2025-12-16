@@ -46,7 +46,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 	// Пошук слова в описі
 	List<Book> findByDescriptionContainingIgnoreCase(String word);
 	
-	// Бестселери – наприклад, top 10 по тиражу
+	// Бестселери
 	@Query("""
 			SELECT new com.lab7.dto.BookDto(
 				book.id,

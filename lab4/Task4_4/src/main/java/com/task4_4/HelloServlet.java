@@ -32,9 +32,11 @@ public class HelloServlet extends HttpServlet {
 		}
 		
 		resp.setContentType("text/html");
-		resp.getWriter().println(
-				"<h2>Результат: " + result + "</h2>" +
-				"<a href='index.jsp'>Повернутися</a>"
-		);
+		try(PrintWriter out = resp.getWriter()) {
+			out.println(
+					"<h2>Результат: " + result + "</h2>" +
+					"<a href='index.jsp'>Повернутися</a>"
+			);
+		}
 	}
 }

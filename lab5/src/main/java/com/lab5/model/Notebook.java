@@ -11,8 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "notebook")
 public class Notebook {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected int id;
 	protected String manufacturer;
 	protected String notebookName;

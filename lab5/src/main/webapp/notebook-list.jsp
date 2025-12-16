@@ -9,7 +9,7 @@
 <body>
 <a href="index.jsp">Меню</a> | <a href="new">Додати новий</a>
 <h1><%= title %></h1>
-<table border="1" cellpadding="5">
+<table border="1">
     <tr>
         <th>ID</th>
         <th>Виробник</th>

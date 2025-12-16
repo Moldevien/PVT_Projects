@@ -19,9 +19,7 @@ public class NotebookDAO {
 	}
 	
 	// -------- CRUD (вже є у тебе) --------
-	/**
-	 * Додати новий блокнот
-	 */
+	/** Додати новий блокнот */
 	public void addNotebook(Notebook notebook) {
 		Transaction transaction = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -34,9 +32,7 @@ public class NotebookDAO {
 		}
 	}
 	
-	/**
-	 * Редагувати блокнот
-	 */
+	/** Редагувати блокнот */
 	public void updateNotebook(Notebook notebook) {
 		Transaction transaction = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -49,9 +45,7 @@ public class NotebookDAO {
 		}
 	}
 	
-	/**
-	 * Видалити блокнот
-	 */
+	/** Видалити блокнот */
 	public void deleteNotebook(int id) {
 		Transaction transaction = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -65,18 +59,14 @@ public class NotebookDAO {
 		}
 	}
 	
-	/**
-	 * Отримати блокнот по Id
-	 */
+	/** Отримати блокнот по Id */
 	public Notebook getNotebook(int id) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			return session.get(Notebook.class, id);
 		}
 	}
 	
-	/**
-	 * Отримати всі блокноти
-	 */
+	/** Отримати всі блокноти */
 	public List<Notebook> getAllNotebook() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			return session.createQuery("FROM Notebook", Notebook.class).getResultList();
@@ -84,9 +74,7 @@ public class NotebookDAO {
 	}
 	
 	// -------- Звіти та фільтри --------
-	/**
-	 * Отримати країни з кількістю блокнотів
-	 */
+	/** Отримати країни з кількістю блокнотів */
 	public List<Object[]> getCountriesWithCount() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			Query<Object[]> q = session.createQuery(
@@ -96,9 +84,7 @@ public class NotebookDAO {
 		}
 	}
 	
-	/**
-	 * Отримати виробників з кількістю блокнотів
-	 */
+	/** Отримати виробників з кількістю блокнотів */
 	public List<Object[]> getManufacturersWithCount() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			Query<Object[]> q = session.createQuery(
@@ -108,9 +94,7 @@ public class NotebookDAO {
 		}
 	}
 	
-	/**
-	 * Отримати країну з максимальною кількістю блокнотів
-	 */
+	/** Отримати країну з максимальною кількістю блокнотів */
 	public Optional<Object[]> getCountryMax() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			Object[] r = session.createQuery(
@@ -122,9 +106,7 @@ public class NotebookDAO {
 		}
 	}
 	
-	/**
-	 * Отримати країну з мінімальною кількістю блокнотів
-	 */
+	/** Отримати країну з мінімальною кількістю блокнотів */
 	public Optional<Object[]> getCountryMin() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			Object[] r = session.createQuery(
@@ -136,9 +118,7 @@ public class NotebookDAO {
 		}
 	}
 	
-	/**
-	 * Отримати виробника з максимальною кількістю блокнотів
-	 */
+	/** Отримати виробника з максимальною кількістю блокнотів */
 	public Optional<Object[]> getManufacturerMax() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			Object[] r = session.createQuery(
@@ -150,9 +130,7 @@ public class NotebookDAO {
 		}
 	}
 	
-	/**
-	 * Отримати виробника з мінімальною кількістю блокнотів
-	 */
+	/** Отримати виробника з мінімальною кількістю блокнотів */
 	public Optional<Object[]> getManufacturerMin() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			Object[] r = session.createQuery(
@@ -164,9 +142,7 @@ public class NotebookDAO {
 		}
 	}
 	
-	/**
-	 * Фільтрація за стилем сторінок
-	 */
+	/** Фільтрація за стилем сторінок */
 	public List<Notebook> filterByCoverType(String type) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			return session.createQuery("FROM Notebook n WHERE n.coverType = :t", Notebook.class)
@@ -175,9 +151,7 @@ public class NotebookDAO {
 		}
 	}
 	
-	/**
-	 * Отримати блокноти за країною виробником
-	 */
+	/** Отримати блокноти за країною виробником */
 	public List<Notebook> getByCountry(String country) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			return session.createQuery("FROM Notebook n WHERE n.country = :c", Notebook.class)
@@ -186,9 +160,7 @@ public class NotebookDAO {
 		}
 	}
 	
-	/**
-	 * Фільтрація за стилем сторінок
-	 */
+	/** Фільтрація за стилем сторінок */
 	public List<Notebook> filterByPageStyle(String style) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			return session.createQuery("FROM Notebook n WHERE n.pageStyle = :s", Notebook.class)
@@ -197,9 +169,7 @@ public class NotebookDAO {
 		}
 	}
 	
-	/**
-	 * Фільтрація за кількістю сторінок
-	 */
+	/** Фільтрація за кількістю сторінок */
 	public List<Notebook> filterByPages(int min, int max) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			return session.createQuery("FROM Notebook n WHERE n.pages BETWEEN :min AND :max", Notebook.class)
@@ -209,9 +179,7 @@ public class NotebookDAO {
 		}
 	}
 	
-	/**
-	 * Фільтрація за тиражем
-	 */
+	/** Фільтрація за тиражем */
 	public List<Notebook> filterByCirculation(int min, int max) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			return session.createQuery("FROM Notebook n WHERE n.circulation BETWEEN :min AND :max", Notebook.class)

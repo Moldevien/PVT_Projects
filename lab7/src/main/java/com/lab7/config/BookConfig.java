@@ -12,7 +12,6 @@ public class BookConfig {
 	@Bean
 	public CommandLineRunner commandLineRunner(BookRepository repo) {
 		return args -> {
-			
 			if (repo.count() == 0) {
 				repo.save(new Book(
 						null,

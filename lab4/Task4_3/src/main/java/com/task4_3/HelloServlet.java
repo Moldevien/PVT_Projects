@@ -8,10 +8,9 @@ import jakarta.servlet.annotation.*;
 @WebServlet(name = "helloServlet", value = "/Task4_3")
 public class HelloServlet extends HttpServlet {
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		HttpSession session = req.getSession();
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		HttpSession session = request.getSession();
 		
-		// Якщо гри ще нема — створюємо
 		if (session.getAttribute("low") == null) {
 			session.setAttribute("low", 0);
 			session.setAttribute("high", 100);
@@ -22,27 +21,30 @@ public class HelloServlet extends HttpServlet {
 		
 		int mid = (low + high) / 2;
 		
-		resp.setContentType("text/html");
-		resp.getWriter().println(
-				"<h2>Це число " + mid + "?</h2>" +
-				"<form method='post'>" +
-					"<button name='answer' value='more'>Більше</button>" +
-					"<button name='answer' value='less'>Менше</button>" +
-					"<button name='answer' value='equal'>Дорівнює</button>" +
-				"</form>"
-		);
+		response.setContentType("text/html");
+		
+		try (PrintWriter out = response.getWriter()) {
+			out.println(
+					"<h2>Це число " + mid + "?</h2>" +
+					"<form method='post'>" +
+						"<button name='answer' value='more'>Більше</button>" +
+						"<button name='answer' value='less'>Менше</button>" +
+						"<button name='answer' value='equal'>Дорівнює</button>" +
+					"</form>"
+			);
+		}
 	}
 	
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		HttpSession session = req.getSession();
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		HttpSession session = request.getSession();
 		
 		int low = (int) session.getAttribute("low");
 		int high = (int) session.getAttribute("high");
 		
 		int mid = (low + high) / 2;
 		
-		String answer = req.getParameter("answer");
+		String answer = request.getParameter("answer");
 		
 		if ("more".equals(answer)) {
 			low = mid;
@@ -50,8 +52,8 @@ public class HelloServlet extends HttpServlet {
 			high = mid;
 		} else if ("equal".equals(answer)) {
 			// Комп’ютер відгадав
-			resp.setContentType("text/html");
-			resp.getWriter().println("<h1>Загадане число = " + mid + "</h1>");
+			response.setContentType("text/html");
+			response.getWriter().println("<h1>Загадане число = " + mid + "</h1>");
 			session.invalidate();
 			return;
 		}
@@ -62,13 +64,13 @@ public class HelloServlet extends HttpServlet {
 		
 		// Якщо комп’ютер точно знає число
 		if (low == high) {
-			resp.setContentType("text/html");
-			resp.getWriter().println("<h1>Загадане число = " + low + "</h1>");
+			response.setContentType("text/html");
+			response.getWriter().println("<h1>Загадане число = " + low + "</h1>");
 			session.invalidate();
 			return;
 		}
 		
 		// Повертаємося до GET
-		resp.sendRedirect("Task4_3");
+		response.sendRedirect("Task4_3");
 	}
 }

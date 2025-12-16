@@ -9,8 +9,11 @@
     boolean edit = sale != null;
 %>
 <html><head><title><%= edit ? "Редагувати" : "Нова" %> угода</title></head><body>
+
 <a href="list">Назад</a>
+
 <h1><%= edit ? "Редагувати" : "Нова" %> угода</h1>
+
 <form action="<%= edit ? "update" : "insert" %>" method="post">
     <% if (edit) { %><input type="hidden" name="id" value="<%= sale.getId() %>"><% } %>
 
@@ -23,15 +26,15 @@
 
     Покупець:
     <select name="clientId">
-        <% for (Client b : clients) { %>
-        <option value="<%= b.getId() %>" <%= edit && sale.getClient().getId()==b.getId() ? "selected" : "" %>><%= b.getName() %></option>
+        <% for (Client client : clients) { %>
+        <option value="<%= client.getId() %>" <%= edit && sale.getClient().getId()==client.getId() ? "selected" : "" %>><%= client.getName() %></option>
         <% } %>
     </select><br>
 
     Товар:
     <select name="productId">
-        <% for (Product p : products) { %>
-        <option value="<%= p.getId() %>" <%= edit && sale.getProduct().getId()==p.getId() ? "selected" : "" %>><%= p.getName() %> - <%= p.getPrice() %></option>
+        <% for (Product product : products) { %>
+        <option value="<%= product.getId() %>" <%= edit && sale.getProduct().getId()==product.getId() ? "selected" : "" %>><%= product.getName() %> - <%= product.getPrice() %></option>
         <% } %>
     </select><br>
 
@@ -39,4 +42,5 @@
 
     <button type="submit"><%= edit ? "Оновити" : "Додати" %></button>
 </form>
+
 </body></html>

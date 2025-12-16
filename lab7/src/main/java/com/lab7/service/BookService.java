@@ -16,10 +16,12 @@ public class BookService {
 		this.repo = repo;
 	}
 	
+	// Додавання книги
 	public Book add(Book book) {
 		return repo.save(book);
 	}
 	
+	// Оновлення книги
 	public Book update(Long id, Book newBook) {
 		Book old = repo.findById(id).orElseThrow();
 		old.setTitle(newBook.getTitle());
@@ -33,52 +35,63 @@ public class BookService {
 		return repo.save(old);
 	}
 	
+	// Видалення книги
 	public void delete(Long id) {
 		repo.deleteById(id);
 	}
 	
+	// Книга за id
 	public Book findById(Long id) {
 		return repo.findById(id).orElseThrow();
 	}
 	
+	// Всі книги
 	public List<Book> findAll() {
 		return repo.findAll();
 	}
 	
-	// Методи пошуку
+	// Пошук за назвою
 	public List<Book> findByTitle(String title) {
 		return repo.findByTitleContainingIgnoreCase(title);
 	}
 	
+	// Пошук за автором
 	public List<Book> findByAuthor(String author) {
 		return repo.findByAuthorContainingIgnoreCase(author);
 	}
 	
+	// Пошук за роком
 	public List<Book> findByYear(int year) {
 		return repo.findByYear(year);
 	}
 	
+	// Пошук за кількістю сторінок
 	public List<Book> findByPages(int pages) {
 		return repo.findByPages(pages);
 	}
 	
+	// Книги, видані видавництвом протягом поточного року
 	public List<Book> findByPublisherThisYear(String publisher) {
 		return repo.findByPublisherThisYear(publisher);
 	}
 	
+	// Пошук слова в описі
 	public List<Book> findInDescription(String word) {
 		return repo.findByDescriptionContainingIgnoreCase(word);
 	}
 	
-	public Book latestByAuthor(String author) {
-		return repo.findLatestBookByAuthor(author).stream().findFirst().orElse(null);
-	}
-	
+	// Жанр + автор + рік
 	public List<Book> findByGenreAuthorYear(String genre, String author, int year) {
 		return repo.findByGenreAndAuthorAndYear(genre, author, year);
 	}
 	
+	// Бестселери
 	public List<BookDto> bestsellers() {
 		return repo.findBestsellers(PageRequest.of(0, 10));
+	}
+	
+	// Остання книга автора
+	public Book latestByAuthor(String author) {
+		return repo.findLatestBookByAuthor(author).stream().findFirst().orElse(null);
 	}
 }

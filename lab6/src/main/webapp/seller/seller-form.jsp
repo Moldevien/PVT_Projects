@@ -4,28 +4,27 @@
     Seller seller = (Seller) request.getAttribute("seller");
     boolean edit = seller != null;
 %>
-<html><head><title><%= edit ? "Редагувати" : "Додати" %> продавця</title></head>
-<body>
+<html><head><title><%= edit ? "Редагувати" : "Додати" %> продавця</title></head><body>
+
 <a href="list">Назад</a>
+
 <h1><%= edit ? "Редагувати" : "Додати" %> продавця</h1>
+
 <form action="<%= edit ? "update" : "insert" %>" method="post">
     <% if (edit) { %>
     <input type="hidden" name="id" value="<%= seller.getId() %>">
     <% } %>
 
     <label>Ім'я: </label>
-    <input name="name" value="<%= edit ? seller.getName() : "" %>" required>
-    <br>
+    <input name="name" value="<%= edit ? seller.getName() : "" %>" required><br>
 
     <label>Телефон:</label>
-    <input name="phone" value="<%= edit ? seller.getPhone() : "" %>">
-    <br>
+    <input name="phone" value="<%= edit ? seller.getPhone() : "" %>" required><br>
 
     <label>Email:</label>
-    <input name="email" value="<%= edit ? seller.getEmail() : "" %>">
-    <br>
-    
+    <input name="email" value="<%= edit ? seller.getEmail() : "" %>" required><br>
+
     <button type="submit"><%= edit ? "Оновити" : "Додати" %></button>
 </form>
-</body>
-</html>
+
+</body></html>

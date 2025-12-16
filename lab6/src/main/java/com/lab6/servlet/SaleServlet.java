@@ -18,7 +18,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 
-@WebServlet("/sale/*")
+@WebServlet(name = "SaleServlet", urlPatterns = {"/sale/list", "/sale/menu", "/sale/new", "/sale/insert",
+		"/sale/edit", "/sale/update", "/sale/delete", "/sale/by-date", "/sale/between",
+		"/sale/by-seller", "/sale/by-client", "/sale/avg"})
 public class SaleServlet extends HttpServlet {
 	private SellerDAO sellerDAO;
 	private ClientDAO clientDAO;
@@ -31,117 +33,89 @@ public class SaleServlet extends HttpServlet {
 		clientDAO = new ClientDAO();
 		productDAO = new ProductDAO();
 		saleDAO = new SaleDAO();
+		
+		generateDemoData();
 	}
 	
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// використовується для форм; перенаправляємо в doGet для простоти
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 	
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String action = request.getPathInfo();
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String action = request.getServletPath();
 		try {
 			switch (action) {
-				case "/list": {
-					list(request, response);
-					break;
-				}
-				case "/new": {
-					showForm(request, response);
-					break;
-				}
-				case "/insert": {
-					insert(request, response);
-					break;
-				}
-				case "/edit": {
-					showEditForm(request, response);
-					break;
-				}
-				case "/update": {
-					update(request, response);
-					break;
-				}
-				case "/delete": {
-					delete(request, response);
-					break;
-				}
-				case "/by-date": {
-					filterByDate(request, response);
-					break;
-				}
-				case "/between": {
-					filterBetween(request, response);
-					break;
-				}
-				case "/by-seller": {
-					filterBySeller(request, response);
-					break;
-				}
-				case "/by-client": {
-					filterByClient(request, response);
-					break;
-				}
-				case "/avg": {
-					avg(request, response);
-					break;
-				}
-				default: {
-					list(request, response);
-				}
+				case "/sale/list": { list(request, response); break; }
+				case "/sale/new": { showForm(request, response); break; }
+				case "/sale/insert": { insert(request, response); break; }
+				case "/sale/edit": { showEditForm(request, response); break; }
+				case "/sale/update": { update(request, response); break; }
+				case "/sale/delete": { delete(request, response); break; }
+				case "/sale/by-date": { filterByDate(request, response); break; }
+				case "/sale/between": { filterBetween(request, response); break; }
+				case "/sale/by-seller": { filterBySeller(request, response); break; }
+				case "/sale/by-client": { filterByClient(request, response); break; }
+				case "/sale/avg": { avg(request, response); break; }
+				default: { list(request, response); break; }
 			}
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
 	}
 	
-	// ---------- Sales ----------
-	
-	/** Показ списку угод */
-	private void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("sales", saleDAO.getAll());
-		request.getRequestDispatcher("sale-list.jsp").forward(request, response);
-	}
-	
 	/** Додавання нової угоди */
-	private void insert(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void insert(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		int sellerId = Integer.parseInt(request.getParameter("sellerId"));
 		int clientId = Integer.parseInt(request.getParameter("clientId"));
 		int productId = Integer.parseInt(request.getParameter("productId"));
 		LocalDate date = LocalDate.parse(request.getParameter("saleDate"));
-		Seller s = sellerDAO.getById(sellerId);
-		Client b = clientDAO.getById(clientId);
-		Product p = productDAO.getById(productId);
-		saleDAO.add(new Sale(s, b, p, date));
+		Seller seller = sellerDAO.getById(sellerId);
+		Client client= clientDAO.getById(clientId);
+		Product product = productDAO.getById(productId);
+		Sale sale = new Sale(seller, client, product, date);
+		saleDAO.add(sale);
 		response.sendRedirect("list");
 	}
 	
 	/** Оновлення угоди */
-	private void update(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void update(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		int sellerId = Integer.parseInt(request.getParameter("sellerId"));
 		int clientId = Integer.parseInt(request.getParameter("clientId"));
 		int productId = Integer.parseInt(request.getParameter("productId"));
 		LocalDate date = LocalDate.parse(request.getParameter("saleDate"));
-		Seller s = sellerDAO.getById(sellerId);
-		Client b = clientDAO.getById(clientId);
-		Product p = productDAO.getById(productId);
-		Sale sale = new Sale(id, s, b, p, date);
+		Seller seller = sellerDAO.getById(sellerId);
+		Client client= clientDAO.getById(clientId);
+		Product product = productDAO.getById(productId);
+		Sale sale = new Sale(id, seller, client, product, date);
 		saleDAO.update(sale);
 		response.sendRedirect("list");
 	}
 	
 	/** Видалення угоди */
-	private void delete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void delete(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		saleDAO.delete(id);
 		response.sendRedirect("list");
 	}
 	
+	/** Показ списку угод */
+	private void list(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.setAttribute("sales", saleDAO.getAll());
+		request.getRequestDispatcher("sale-list.jsp").forward(request, response);
+	}
+	
 	/** Показ форми додавання нової угоди */
-	private void showForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void showForm(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// підкласти списки продавців/покупців/товарів
 		request.setAttribute("sellers", sellerDAO.getAll());
 		request.setAttribute("clients", clientDAO.getAll());
@@ -150,7 +124,8 @@ public class SaleServlet extends HttpServlet {
 	}
 	
 	/** Показ форми редагування угоди */
-	private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void showEditForm(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		Sale sale = saleDAO.getById(id);
 		request.setAttribute("sale", sale);
@@ -163,7 +138,8 @@ public class SaleServlet extends HttpServlet {
 	// ---------- Reports ----------
 	
 	/** Угоди за певну дату */
-	private void filterByDate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void filterByDate(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String dateStr = request.getParameter("date");
 		LocalDate date = (dateStr == null || dateStr.isEmpty()) ? LocalDate.now() : LocalDate.parse(dateStr);
 		request.setAttribute("sales", saleDAO.getByDate(date));
@@ -172,7 +148,8 @@ public class SaleServlet extends HttpServlet {
 	}
 	
 	/** Угоди між двома датами */
-	private void filterBetween(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void filterBetween(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String from = request.getParameter("from");
 		String to = request.getParameter("to");
 		LocalDate d1 = (from == null || from.isEmpty()) ? LocalDate.now().minusMonths(1) : LocalDate.parse(from);
@@ -183,23 +160,26 @@ public class SaleServlet extends HttpServlet {
 	}
 	
 	/** Угоди певного продавця */
-	private void filterBySeller(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void filterBySeller(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("sellerId"));
 		request.setAttribute("sales", saleDAO.getBySeller(id));
 		request.setAttribute("title", "Угоди продавця: " + sellerDAO.getById(id).getName());
-		request.getRequestDispatcher("sales-by-seller.jsp").forward(request, response);
+		request.getRequestDispatcher("sales-list.jsp").forward(request, response);
 	}
 	
 	/** Угоди певного покупця */
-	private void filterByClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void filterByClient(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("clientId"));
 		request.setAttribute("sales", saleDAO.getByClient(id));
 		request.setAttribute("title", "Угоди покупця: " + clientDAO.getById(id).getName());
-		request.getRequestDispatcher("sales-by-client.jsp").forward(request, response);
+		request.getRequestDispatcher("sales-list.jsp").forward(request, response);
 	}
 	
 	/** Середня вартість покупки */
-	private void avg(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void avg(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		Double avg = saleDAO.getAveragePurchase();
 		request.setAttribute("avg", avg);
 		request.getRequestDispatcher("average-purchase.jsp").forward(request, response);

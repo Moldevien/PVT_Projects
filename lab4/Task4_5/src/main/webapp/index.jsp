@@ -11,5 +11,4 @@
     <li><a href="news.jsp">Новини</a></li>
     <li><a href="models.jsp">Моделі ноутбуків</a></li>
 </ul>
-</body>
-</html>
+</body></html>
